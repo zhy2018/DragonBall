@@ -1,0 +1,13 @@
+{
+  "debugMode": 1,
+  "frameRate": 30,
+  "id": "gameCanvas",
+  "renderMode": 1,
+  "jsList": [
+		"js/core.js",
+    "js/tools.js",
+		"js/sceneWelcome.js",
+		"js/sceneMap.js",
+		"js/sceneMain.js"
+  ]
+}

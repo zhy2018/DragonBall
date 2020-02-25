@@ -1,0 +1,14 @@
+{
+	"tileSize": 29,
+	"roleSize": 24,
+	"mapSizeLimit": 9,
+	"time": 0.2,
+	"resPath": "assets/resources/",
+	"hpLine": 256,
+	"hpLimit": 1024,
+	"hpStep": 16,
+	"mpLimit": 32,
+	"mpStep": 1,
+	"dpLimit": 128,
+	"dpStep": 8
+}
