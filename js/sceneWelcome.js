@@ -2,8 +2,8 @@ var sceneWelcome = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
 		var winSize = cc.director.getWinSize();
-		w = winSize.width;
-		h = winSize.height;
+		var w = winSize.width;
+		var h = winSize.height;
 		control.winWidth = w;
 		control.winHeight = h;
 		var bgSize = 256;
@@ -85,7 +85,7 @@ var sceneWelcome = cc.Scene.extend({
 			x: w / 2,
 			y: h / 4,
 			scaleX: 0.75,
-			lineWidth: 2 * scaleX,
+			lineWidth: 3 * scaleX,
 			strokeStyle: cc.color(0, 0, 0, 255),
 		});
 		this.addChild(btn);
