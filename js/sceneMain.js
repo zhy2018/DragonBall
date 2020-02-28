@@ -1,8 +1,11 @@
 var sceneMain = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
-		w = control.winWidth;
-		h = control.winHeight;
+		var winSize = cc.director.getWinSize();
+		var w = winSize.width;
+		var h = winSize.height;
+		control.winWidth = w;
+		control.winHeight = h;
 
 		// 计算格子的缩放倍数
 		control.zoom = w / config.mapSizeLimit / config.tileSize;
@@ -19,17 +22,40 @@ var sceneMain = cc.Scene.extend({
 		var mask = cc.LayerColor.create(funcColor('#ffffff'), w, h);
 		this.addChild(mask);
 
-		// 背景图
+		// 背景层
 		var scale = w / 264;
 		scale = scale.toFixed(3) - 0;
-		var bg = cc.Sprite.create(res.bg, cc.rect(0, 576, 264, 208));
+		var layerBg = cc.Layer.create();
+		layerBg.attr({
+			
+		});
+		control.layerScene.addChild(layerBg);
+
+		var bg = cc.Sprite.create(res.bg, cc.rect(481, 256, 264, 208));
 		bg.attr({
 			y: h,
 			anchorX: 0,
 			anchorY: 1,
 			scale: scale,
 		});
-		control.layerScene.addChild(bg);
+		layerBg.addChild(bg);
+		bg.runAction(cc.repeatForever(cc.sequence(
+			cc.moveTo(10, cc.p(-bg.width * scale, h)),
+			cc.moveTo(0, cc.p(0, h))
+		)));
+		var bg2 = cc.Sprite.create(res.bg, cc.rect(481, 256, 264, 208));
+		bg2.attr({
+			x: bg.width * scale,
+			y: h,
+			anchorX: 0,
+			anchorY: 1,
+			scale: scale,
+		});
+		layerBg.addChild(bg2);
+		bg2.runAction(cc.repeatForever(cc.sequence(
+			cc.moveTo(10, cc.p(0, h)),
+			cc.moveTo(0, cc.p(bg.width * scale, h))
+		)));
 
 		funcShowHeroInfo();
 		funcUpdateHeroInfo();

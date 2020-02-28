@@ -421,20 +421,17 @@ function funcShowHeroInfo() {
 	});
 	layerHP.addChild(hpUI);
 
-	var colors = ['#f82040', '#f89000', '#00e800', '#68b8d0'];
-	for (var i = 0; i < colors.length; i += 1) {
-		var color = colors[i];
-		var hpBar = cc.LayerColor.create(funcColor(color), 0, 6);
-		hpBar.attr({ x: 32, y: -23 });
+	for (var i = 116; i <= 140; i += 8) {
+		var hpBar = cc.Sprite.create(res.sprite, cc.rect(i, 81, 1, 6));
+		hpBar.attr({
+			x: 32,
+			y: -23,
+			anchorX: 0,
+			anchorY: 0,
+			scaleX: 0,
+		});
 		layerHP.addChild(hpBar);
 	}
-
-	var hpBorderTop = cc.LayerColor.create(cc.color(255, 255, 255, 192), 64, 1);
-	hpBorderTop.attr({ x: 32, y: -18 });
-	layerHP.addChild(hpBorderTop);
-	var hpBorderBottom = cc.LayerColor.create(cc.color(0, 0, 0, 128), 64, 1);
-	hpBorderBottom.attr({ x: 32, y: -23 });
-	layerHP.addChild(hpBorderBottom);
 
 	var dp = cc.LayerColor.create(funcColor('#00e800'), 0, 2);
 	dp.attr({ x: 32, y: -28 });
@@ -487,20 +484,17 @@ function funcShowHeroInfo() {
 	});
 	layerMP.addChild(mpLoader2);
 
-	colors = ['#f0a040', '#f8f800', '#f82040'];
-	for (var i = 0; i < colors.length; i += 1) {
-		var color = colors[i];
-		var mpBar = cc.LayerColor.create(funcColor(color), 0, 4);
-		mpBar.attr({ x: x0, y: mpUI.y - 13 });
+	for (var i = 56; i <= 68; i += 6) {
+		var mpBar = cc.Sprite.create(res.sprite, cc.rect(i, 108, 1, 4));
+		mpBar.attr({
+			x: x0,
+			y: mpUI.y - 13,
+			anchorX: 0,
+			anchorY: 0,
+			scaleX: 0,
+		});
 		layerMP.addChild(mpBar);
 	}
-
-	var mpBorderTop = cc.LayerColor.create(cc.color(0, 0, 0, 80), 64, 1);
-	mpBorderTop.attr({ x: x0, y: mpUI.y - 10 });
-	layerMP.addChild(mpBorderTop);
-	var mpBorderBottom = cc.LayerColor.create(cc.color(0, 0, 0, 80), 64, 1);
-	mpBorderBottom.attr({ x: x0, y: mpUI.y - 13 });
-	layerMP.addChild(mpBorderBottom);
 	layerMP.runAction(cc.moveTo(0.5, cc.p(0, 0)));
 }
 
@@ -522,19 +516,19 @@ function funcUpdateHeroInfo(type) {
 		if (hero.hp % hpLine) hp.push(hero.hp % hpLine);
 
 		for (var i = 0; i < hp.length; i += 1) {
-			layerHP[i + 1].attr({ width: hp[i] / 4 });
+			layerHP[i + 1].attr({ scaleX: hp[i] / 4 });
 		}
 	}
 
 	if (!type || type === 'dp') {
-		layerHP[7].attr({ width: hero.dp / 4 });
+		layerHP[5].attr({ width: hero.dp / 4 });
 	}
 
 	if (!type || type === 'mp') {
 		var mpFix = parseInt(hero.mp / 8) * 8;
-		layerMP[6].attr({ width: hero.mp * 2 });
-		layerMP[7].attr({ width: mpFix * 2 });
+		layerMP[6].attr({ scaleX: hero.mp * 2 });
+		layerMP[7].attr({ scaleX: mpFix * 2 });
 		if (hero.mpGather > 0)
-			layerMP[8].attr({ width: hero.mpGather * 2 });
+			layerMP[8].attr({ scaleX: hero.mpGather * 2 });
 	}
 }
