@@ -1,7 +1,10 @@
+// 三消核心玩法实现
+// 暂未实现: 打乱(重新洗牌), 检查是否死局
+
 // 初始化所有格子
 function funcInit() {
 	var tileSize = config.tileSize, roleSize = config.roleSize;
-	var data = control.stageData[control.stageNum];
+	var data = control.stageData[control.stageNum - 1];
 	if (data) control.maps = data.map || [];
 	else control.maps = [];
 	var maps = control.maps;
@@ -389,146 +392,4 @@ function funcFill() {
 		var result = funcCheck();
 		if (result) funcRemove();
 	}, time * distanceMax);
-}
-
-// 显示血槽, 防御槽和气槽
-function funcShowHeroInfo() {
-	var w = control.winWidth, h = control.winHeight;
-	var hero = game.hero;
-	hero.hpFull = config.hpLimit;
-	hero.mpFull = config.mpLimit;
-	hero.dpFull = config.dpLimit;
-	var scale = w / 2.5 / 112;
-	scale = scale.toFixed(3) - 0;
-	control.scaleUI = scale;
-
-	var layerUI = cc.LayerColor.create(funcColor('#000000'), 0, 0);
-	layerUI.attr({
-		y: h,
-		scale: scale,
-	});
-	control.layerScene.addChild(layerUI);
-
-	var layerHP = cc.Layer.create();
-	layerHP.attr({ y: 32 });
-	layerUI.addChild(layerHP);
-
-	var hpUI = cc.Sprite.create(res.sprite, cc.rect(0, 64, 112, 32));
-	hpUI.attr({
-		y: 0,
-		anchorX: 0,
-		anchorY: 1,
-	});
-	layerHP.addChild(hpUI);
-
-	for (var i = 116; i <= 140; i += 8) {
-		var hpBar = cc.Sprite.create(res.sprite, cc.rect(i, 81, 1, 6));
-		hpBar.attr({
-			x: 32,
-			y: -23,
-			anchorX: 0,
-			anchorY: 0,
-			scaleX: 0,
-		});
-		layerHP.addChild(hpBar);
-	}
-
-	var dp = cc.LayerColor.create(funcColor('#00e800'), 0, 2);
-	dp.attr({ x: 32, y: -28 });
-	layerHP.addChild(dp);
-
-	var name = cc.LabelTTF.create(hero.name, '黑体', 16);
-	name.attr({
-		x: 32,
-		y: -1,
-		anchorX: 0,
-		anchorY: 1,
-		lineWidth: 1,
-		strokeStyle: cc.color(0, 0, 0, 255),
-	});
-	layerHP.addChild(name);
-	layerHP.runAction(cc.moveTo(0.5, cc.p(0, 0)));
-
-	var layerMP = cc.Layer.create();
-	layerMP.attr({ y: -32 });
-	layerUI.addChild(layerMP);
-
-	var mpUI = cc.Sprite.create(res.sprite, cc.rect(2, 98, 20, 19));
-	mpUI.attr({
-		x: 8,
-		y: -(h - w - 19 * scale - 8) / scale,
-		anchorX: 0,
-		anchorY: 1,
-	});
-	layerMP.addChild(mpUI);
-
-	var x0 = 27;
-	var ii = 4;
-	for (var i = 0; i < ii; i += 1) {
-		var mpLoader = cc.Sprite.create(res.sprite, cc.rect(24, 106, 16, 8));
-		mpLoader.attr({
-			x: 16 * i + x0,
-			y: mpUI.y - 7,
-			anchorX: 0,
-			anchorY: 1,
-		});
-		layerMP.addChild(mpLoader);
-	}
-
-	var mpLoader2 = cc.Sprite.create(res.sprite, cc.rect(48, 106, 5, 8));
-	mpLoader2.attr({
-		x: 16 * ii + x0,
-		y: mpUI.y - 7,
-		anchorX: 0,
-		anchorY: 1,
-	});
-	layerMP.addChild(mpLoader2);
-
-	for (var i = 56; i <= 68; i += 6) {
-		var mpBar = cc.Sprite.create(res.sprite, cc.rect(i, 108, 1, 4));
-		mpBar.attr({
-			x: x0,
-			y: mpUI.y - 13,
-			anchorX: 0,
-			anchorY: 0,
-			scaleX: 0,
-		});
-		layerMP.addChild(mpBar);
-	}
-	layerMP.runAction(cc.moveTo(0.5, cc.p(0, 0)));
-}
-
-// 更新血槽, 防御槽和气槽
-function funcUpdateHeroInfo(type) {
-	var layerUI = control.layerScene.children[1].children;
-	var layerHP = layerUI[0].children;
-	var layerMP = layerUI[1].children;
-	var hero = game.hero;
-	var hpLine = config.hpLine;
-
-	if (!type || type === 'hp') {
-		var hp = [];
-		var ii = parseInt(hero.hp / hpLine);
-
-		for (var i = 0; i < ii; i += 1) {
-			hp.push(hpLine);
-		}
-		if (hero.hp % hpLine) hp.push(hero.hp % hpLine);
-
-		for (var i = 0; i < hp.length; i += 1) {
-			layerHP[i + 1].attr({ scaleX: hp[i] / 4 });
-		}
-	}
-
-	if (!type || type === 'dp') {
-		layerHP[5].attr({ width: hero.dp / 4 });
-	}
-
-	if (!type || type === 'mp') {
-		var mpFix = parseInt(hero.mp / 8) * 8;
-		layerMP[6].attr({ scaleX: hero.mp * 2 });
-		layerMP[7].attr({ scaleX: mpFix * 2 });
-		if (hero.mpGather > 0)
-			layerMP[8].attr({ scaleX: hero.mpGather * 2 });
-	}
 }

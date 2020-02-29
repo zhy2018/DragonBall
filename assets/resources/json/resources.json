@@ -2,5 +2,6 @@
 	"sprite": "image/sprite.png",
 	"stage": "json/stage.json",
 	"action": "image/action.png",
-	"bg": "image/bg.png"
+	"bg": "image/bg.png",
+	"animation": "json/animation.json"
 }

@@ -42,34 +42,16 @@ var sceneMap = cc.Scene.extend({
 		// this.addChild(temp);
 		// temp.runAction(cc.RepeatForever.create(cc.Blink.create(1, 5)));
 
-		var data = [
-			[40, 156, '悟空的家'],
-			[88, 230, '海边龟屋'],
-			[112, 168, '乌龙的村子'],
-			[48, 64, '荒野'],
-			[132, 72, '火焰山'],
-			[172, 156, '比拉夫城'],
-			[132, 264, '修行的岛'],
-			[232, 188, '天下第一武道会会场'],
-			[232, 72, '玛斯鲁高塔'],
-			[336, 64, '海底洞窟'],
-			[434, 64, '圣地加林'],
-			[434, 132, '红缎带军团基地'],
-			[336, 132, '占卜婆婆的宫殿'],
-			[336, 188, '街道'],
-			[284, 264, '都市上空'],
-			[336, 264, '弥次郎兵卫的草原'],
-			[434, 264, '大总统的都城'],
-		];
+		var data = control.stageData;
 		var size = 40;
 		for (var i = 0; i < data.length; i += 1) {
 			var item = data[i];
 			var sprite = cc.Sprite.create(res.sprite, cc.rect(i * size, 260, size, size));
 			sprite.attr({
-				x: item[0],
-				y: -item[1],
+				x: item.mapX,
+				y: -item.mapY,
 				anchorY: 0,
-				name: item[2],
+				name: item.name,
 			});
 			layerSite.addChild(sprite);
 		}
@@ -78,8 +60,8 @@ var sceneMap = cc.Scene.extend({
 		size = 32;
 		var hero = cc.Sprite.create(res.action, cc.rect(0, 168, size, size));
 		hero.attr({
-			x: data[0][0],
-			y: data[0][1],
+			x: data[0].mapX,
+			y: data[0].mapY,
 			anchorY: 0,
 		});
 		layer.addChild(hero);
@@ -90,7 +72,7 @@ var sceneMap = cc.Scene.extend({
 		}
 		aniStand.setDelayPerUnit(0.2);
 		hero.runAction(cc.repeatForever(cc.animate(aniStand)));
- 
+
 		var eventType = 'click'; // click or drag
 		var acceptTouch = true; // 是否响应触控事件
 		cc.eventManager.addListener({

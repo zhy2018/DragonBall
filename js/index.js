@@ -13,7 +13,7 @@ var control = {
 	acceptTouch: false, // 是否响应触控事件
 	touchListener: {}, // 触控事件
 	stageNum: 1,
-	stageData: {},
+	stageData: [],
 	scaleUI: 2,
 };
 var game = {
@@ -23,7 +23,13 @@ var game = {
 		mp: 0,
 		mpGather: 0,
 		dp: 0,
-		status: 'ok',
+		status: 'stand',
+		hit: 0,
+		hitCount: 0,
+		ani: {
+			stand: {},
+			hit: {},
+		},
 	},
 };
 
@@ -47,7 +53,11 @@ window.onload = function() {
 				}
 
 				cc.LoaderScene.preload(resData, function() {
-					cc.director.runScene(new sceneWelcome());
+					// 加载关卡数据
+					cc.loader.loadJson(res.stage, function(_, data) {
+						control.stageData = data;
+						cc.director.runScene(new sceneWelcome());
+					});
 				}, this);
 			});
 		});
