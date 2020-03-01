@@ -1,6 +1,6 @@
 {
 	"tileSize": 29,
-	"roleSize": 24,
+	"cellSize": 24,
 	"mapSizeLimit": 9,
 	"time": 0.2,
 	"resPath": "assets/resources/",

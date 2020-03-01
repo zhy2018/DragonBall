@@ -1,8 +1,7 @@
 var sceneMap = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
-		var w = control.winWidth;
-		var h = control.winHeight;
+		var w = control.winWidth, h = control.winHeight;
 		var scale = h / 320;
 		scale = scale.toFixed(3) - 0;
 

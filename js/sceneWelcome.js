@@ -1,11 +1,7 @@
 var sceneWelcome = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
-		var winSize = cc.director.getWinSize();
-		var w = winSize.width;
-		var h = winSize.height;
-		control.winWidth = w;
-		control.winHeight = h;
+		var w = control.winWidth, h = control.winHeight;
 		var bgSize = 256;
 		var scaleX = w / bgSize;
 		scaleX = scaleX.toFixed(3) - 0;

@@ -5,15 +5,23 @@ var control = {
 	zoom: 1, // 格子的缩放倍数
 	mapSize: 9, // 地图大小(正方形, 每行或每列里的格子个数)
 	maps: [],
-	layerScene: {},
-	roles: {},
-	roleNum: 4,
-	firstRole: false, // 第一次点击的格子(首次, 之前的)
-	currentRole: false, // 第二次点击的格子(当前的)
-	acceptTouch: false, // 是否响应触控事件
-	touchListener: {}, // 触控事件
-	stageNum: 1,
+	layer: {
+		floor: {},
+		bg: {},
+		ui: {},
+		stage: {},
+		fight: {},
+		info: {},
+		mask: {},
+	},
+	cells: {},
+	cellUpper: 4, // n种物品可供点击
+	firstCell: false, // 第一次点击的格子(首次, 之前的)
+	currentCell: false, // 第二次点击的格子(当前的)
+	acceptTouch: true, // 是否响应触控事件
 	stageData: [],
+	stageNum: 0,
+	sceneNum: 0,
 	scaleUI: 2,
 };
 var game = {
@@ -56,7 +64,13 @@ window.onload = function() {
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
 						control.stageData = data;
-						cc.director.runScene(new sceneWelcome());
+						var winSize = cc.director.getWinSize();
+						w = winSize.width;
+						h = winSize.height;
+						control.winWidth = w;
+						control.winHeight = h;
+
+						cc.director.runScene(new sceneMain()); // 走起
 					});
 				}, this);
 			});
