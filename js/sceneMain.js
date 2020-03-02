@@ -2,21 +2,12 @@ var sceneMain = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
 
-// layer: {
-// 	floor: {},
-// 	bg: {},
-// 	ui: {},
-// 	stage: {},
-// 	fight: {},
-// 	info: {},
-// 	mask: {},
-// },
 		// 初始化所有图层
-
 		// 底层
 		var floor = cc.LayerColor.create();
 		this.addChild(floor);
 		control.layer.floor = floor;
+
 		// 背景层
 		var bg = cc.Layer.create();
 		this.addChild(bg);
@@ -36,50 +27,23 @@ var sceneMain = cc.Scene.extend({
 		control.layer.stage = stage;
 		funcInitStage();
 
-		// // 人物层, 包含了小英雄和坏蛋们
-		// var layerFighter = cc.Layer.create();
-		// layerFight.addChild(layerFighter);
-		// // 小英雄
-		// var hero = cc.Sprite.create(res.action, cc.rect(0, 0, 32, 40));
-		// hero.attr({
-		// 	x: w / 2 / scale,
-		// 	anchorY: 0,
-		// });
-		// layerFighter.addChild(hero);
-		// var aniStand = cc.Animation.create();
-		// for (var i = 0; i < 8; i += 1) {
-		// 	var frame = cc.SpriteFrame.create(res.action, cc.rect(i * 32, 0, 32, 40));
-		// 	aniStand.addSpriteFrame(frame);
-		// }
-		// aniStand.setDelayPerUnit(0.1);
-		// hero.runAction(cc.repeatForever(cc.animate(aniStand)));
+		// 打斗层, 包括一个打斗场合和小英雄以及坏蛋们
+		var fight = cc.LayerColor.create(cc.color(255, 0, 0, 0));
+		this.addChild(fight);
+		control.layer.fight = fight;
+		funcInitFight();
 
-		// // 消息层
-		// var layerInfo = cc.Layer.create();
-		// control.layerScene.addChild(layerInfo);
+		// 消息层
+		var info = cc.Layer.create();
+		this.addChild(info);
+		control.layer.info = info;
 
-		// // 蒙层
-		// var mask = cc.LayerColor.create(funcColor('#ffffff'), w, h);
-		// this.addChild(mask);
+		// 蒙层
+		var mask = cc.LayerColor.create(funcColor('#ffffff'));
+		this.addChild(mask);
+		control.layer.mask = mask;
 
-		// var sprite;
-		// mask.runAction(cc.FadeOut.create(0.5));
-		// mask.scheduleOnce(function() {
-		// 	sprite = cc.Sprite.create(res.sprite, cc.rect(0, 220, 117, 36));
-		// 	sprite.attr({
-		// 		x: w / 2,
-		// 		y: h / 2,
-		// 		scale: scale,
-		// 	});
-		// 	layerInfo.addChild(sprite);
-		// }, 0.5);
-		// mask.scheduleOnce(function() {
-		// 	sprite.setTextureRect(cc.rect(120, 220, 65, 35));
-		// }, 1);
-		// mask.scheduleOnce(function() {
-		// 	layerInfo.removeAllChildren();
-		// 	control.acceptTouch = true;
-		// }, 1.5);
+		funcGo(); // 走起！
 	},
 	onExit: function() {
 		this._super();
@@ -98,8 +62,13 @@ function funcInitBg() {
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / rect[2];
 	scale = scale.toFixed(3) - 0;
+	var mapping = {
+		top: [h, 1],
+		center: [w + (h - w) / 2, 0.5],
+		bottom: [w, 0],
+	};
 	control.layer.bg.attr({
-		y: h,
+		y: mapping[data.bgLocation][0],
 		anchorX: 0,
 		anchorY: 0,
 		scale: scale,
@@ -108,7 +77,7 @@ function funcInitBg() {
 	var bg0 = cc.Sprite.create(res.bg, cc.rect(rect[0], rect[1], rect[2], rect[3]));
 	bg0.attr({
 		anchorX: 0,
-		anchorY: 1,
+		anchorY: mapping[data.bgLocation][1],
 	});
 	control.layer.bg.addChild(bg0);
 
@@ -121,7 +90,7 @@ function funcInitBg() {
 		bg1.attr({
 			x: bg0.width,
 			anchorX: 0,
-			anchorY: 1,
+			anchorY: mapping[data.bgLocation][1],
 		});
 		control.layer.bg.addChild(bg1);
 		bg1.runAction(cc.repeatForever(cc.sequence(
@@ -138,9 +107,9 @@ function funcInitUI() {
 	hero.hpFull = data.hpFull || config.hpLimit;
 	hero.mpFull = data.mpFull || config.mpLimit;
 	hero.dpFull = config.dpLimit;
-	hero.hp = 0; // data.hp || hero.hpFull;
-	hero.mp = 0; // data.mp || hero.mpFull;
-	hero.dp = 0; // config.dpLimit;
+	hero.hp = data.hp || hero.hpFull;
+	hero.mp = data.mp || hero.mpFull;
+	hero.dp = config.dpLimit;
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / 2.5 / 112;
 	scale = scale.toFixed(3) - 0;
@@ -188,7 +157,6 @@ function funcInitUI() {
 		strokeStyle: cc.color(0, 0, 0, 255),
 	});
 	layerHP.addChild(name);
-	layerHP.runAction(cc.moveTo(0.5, cc.p(0, 0)));
 
 	var layerMP = cc.Layer.create();
 	layerMP.attr({ y: -32 });
@@ -236,7 +204,6 @@ function funcInitUI() {
 		});
 		layerMP.addChild(mpBar);
 	}
-	layerMP.runAction(cc.moveTo(0.5, cc.p(0, 0)));
 }
 
 // 更新血槽, 防御槽和气槽
@@ -274,14 +241,98 @@ function funcUpdateUI(type) {
 	}
 }
 
-// 初始化打斗场合
-function funcInitFight() {
-	
+// 拉开帷幕, 准备开始
+function funcGo() {
+	var w = control.winWidth, h = control.winHeight;
+	var mask = control.layer.mask, info = control.layer.info;
+	var sprite;
+	var fadeOut = cc.FadeOut.create(0.5);
+	var callFunc0 = cc.callFunc(function() {
+		var ui = control.layer.ui.children;
+		ui[0].runAction(cc.moveTo(0.5, cc.p(0, 0)));
+		ui[1].runAction(cc.moveTo(0.5, cc.p(0, 0)));
+	});
+	var callFunc1 = cc.callFunc(function() {
+		sprite = cc.Sprite.create(res.sprite, cc.rect(0, 220, 117, 36));
+		sprite.attr({
+			x: w / 2,
+			y: h / 2,
+			scale: control.scaleUI,
+		});
+		info.addChild(sprite);
+	});
+	var callFunc2 = cc.callFunc(function() {
+		sprite.setTextureRect(cc.rect(120, 220, 65, 35));
+	});
+	var callFunc3 = cc.callFunc(function() {
+		info.removeAllChildren();
+		control.acceptTouch = true;
+	});
+	var delay = cc.delayTime(0.5);
+	var actions = [
+		fadeOut,
+		delay, callFunc0,
+		delay, callFunc1,
+		delay, callFunc2,
+		delay, callFunc3,
+	];
+	mask.runAction(cc.sequence(actions));
 }
 
-// 更新人物动作
+// 初始化打斗场合
+function funcInitFight() {
+	var w = control.winWidth, h = control.winHeight, scale = control.scaleUI;
+	var fight = control.layer.fight, stage = control.layer.stage;
+	fight.attr({
+		height: h - stage.height,
+		y: stage.y + stage.height,
+	});
+
+	// 打手层
+	var fighter = cc.Layer.create();
+	fight.addChild(fighter);
+	fight.fighter = fighter;
+
+	// 小英雄
+	var hero = cc.Sprite.create(res.action, cc.rect(0, 0, 32, 40));
+	hero.attr({
+		x: w / 2,
+		anchorY: 0,
+		scale: scale,
+	});
+	fighter.addChild(hero);
+	fighter.hero = hero;
+
+	var aniStand = cc.Animation.create();
+	for (var i = 0; i < 8; i += 1) {
+		var frame = cc.SpriteFrame.create(res.action, cc.rect(i * 32, 0, 32, 40));
+		aniStand.addSpriteFrame(frame);
+	}
+	aniStand.setDelayPerUnit(0.1);
+	// aniStand.getFrames()[0]._delayPerUnit = 4;
+	game.hero.ani.stand = aniStand;
+	hero.runAction(cc.repeatForever(cc.animate(aniStand)));
+
+	// 加载动作数据
+	cc.loader.loadJson(res.animation, function(_, data) {
+		var aniHit = cc.Animation.create();
+		var a = data.wukong.hit;
+		for (var i = 0; i < a.length; i += 1) {
+			var frame = cc.SpriteFrame.create(res.action, cc.rect(a[i][0], a[i][1], a[i][2], a[i][3]));
+			frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
+			aniHit.addSpriteFrame(frame);
+		}
+		aniHit.setDelayPerUnit(0.05);
+		game.hero.ani.hit = aniHit;
+		// funcUpdateAction('hero', 'hit');
+	});
+}
+
+// 更新打手的动作
 // type: 0小英雄, 1坏蛋
 // status: stand站立, hit打击, defense防御, parry格挡, injured受伤, die倒地不起
 function funcUpdateAction(type, status) {
-	
+	var boy = control.layer.fight.fighter[type];
+	boy.stopAllActions();
+	boy.runAction(cc.repeatForever(cc.animate(game[type].ani[status])));
 }

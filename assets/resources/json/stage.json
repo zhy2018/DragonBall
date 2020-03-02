@@ -2,27 +2,30 @@
 	"name": "悟空的家",
 	"mapX": 40,
 	"mapY": 156,
-	"scene": [
-		{
+	"scene": [{
 			"bgRect": [481, 256, 264, 208],
+			"bgLocation": "top",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
 			"bgRect": [747, 256, 256, 224],
+			"bgLocation": "bottom",
 			"bgColor": "#007868",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
 			"bgRect": [481, 256, 264, 208],
+			"bgLocation": "center",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
 			"bgRect": [481, 256, 264, 208],
+			"bgLocation": "bottom",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []

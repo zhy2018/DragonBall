@@ -18,7 +18,7 @@ var control = {
 	cellUpper: 4, // n种物品可供点击
 	firstCell: false, // 第一次点击的格子(首次, 之前的)
 	currentCell: false, // 第二次点击的格子(当前的)
-	acceptTouch: true, // 是否响应触控事件
+	acceptTouch: false, // 是否响应触控事件
 	stageData: [],
 	stageNum: 0,
 	sceneNum: 0,
@@ -32,8 +32,9 @@ var game = {
 		mpGather: 0,
 		dp: 0,
 		status: 'stand',
-		hit: 0,
-		hitCount: 0,
+		hitPhase: 0, // 第n段打击
+		hitUpper: 0, // 共n段打击
+		hitCount: 0, // 连击数
 		ani: {
 			stand: {},
 			hit: {},
