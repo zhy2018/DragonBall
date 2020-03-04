@@ -23,6 +23,11 @@ var control = {
 	stageNum: 0,
 	sceneNum: 0,
 	scaleUI: 2,
+	scene: {
+		welcome: {},
+		map: {},
+		main: {},
+	},
 };
 var game = {
 	hero: {
@@ -51,6 +56,18 @@ window.onload = function() {
 		var h = window.innerHeight;
 		cc.view.setDesignResolutionSize(w < h ? w : h, h > w ? h : w, cc.ResolutionPolicy.SHOW_ALL);
 
+		var winSize = cc.director.getWinSize();
+		w = winSize.width;
+		h = winSize.height;
+		control.winWidth = w;
+		control.winHeight = h;
+
+		control.scene = {
+			welcome: new sceneWelcome(),
+			map: new sceneMap(),
+			main: new sceneMain(),
+		};
+
 		cc.loader.loadJson('config.json', function(_, data) {
 			config = data;
 			cc.loader.loadJson(config.resPath + 'json/resources.json', function(_, data) {
@@ -65,13 +82,7 @@ window.onload = function() {
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
 						control.stageData = data;
-						var winSize = cc.director.getWinSize();
-						w = winSize.width;
-						h = winSize.height;
-						control.winWidth = w;
-						control.winHeight = h;
-
-						cc.director.runScene(new sceneMain()); // 走起
+						cc.director.runScene(control.scene.welcome); // 走起
 					});
 				}, this);
 			});

@@ -3,28 +3,28 @@
 	"mapX": 40,
 	"mapY": 156,
 	"scene": [{
-			"bgRect": [481, 256, 264, 208],
+			"bgRect": [481, 256, 262, 208],
 			"bgLocation": "top",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
-			"bgRect": [747, 256, 256, 224],
+			"bgRect": [745, 256, 254, 224],
 			"bgLocation": "bottom",
 			"bgColor": "#007868",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
-			"bgRect": [481, 256, 264, 208],
+			"bgRect": [481, 256, 262, 208],
 			"bgLocation": "center",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
-			"bgRect": [481, 256, 264, 208],
+			"bgRect": [481, 256, 262, 208],
 			"bgLocation": "bottom",
 			"bgColor": "#007858",
 			"autoScroll": false,
@@ -38,19 +38,36 @@
 }, {
 	"name": "海边龟屋",
 	"mapX": 88,
-	"mapY": 230
+	"mapY": 230,
+	"noFight": true
 }, {
 	"name": "乌龙的村子",
 	"mapX": 112,
-	"mapY": 168
+	"mapY": 168,
+	"hp": 256,
+	"hpFull": 256,
+	"mp": 8,
+	"mpFull": 8
 }, {
 	"name": "荒野",
 	"mapX": 48,
-	"mapY": 64
+	"mapY": 64,
+	"scene": [{
+		"bgRect": [736, 480, 264, 180],
+		"bgLocation": "bottom",
+		"bgColor": "#f0e098",
+		"autoScroll": false,
+		"enemy": []
+	}],
+	"hp": 256,
+	"hpFull": 256,
+	"mp": 8,
+	"mpFull": 8
 }, {
 	"name": "火焰山",
 	"mapX": 132,
-	"mapY": 72
+	"mapY": 72,
+	"noFight": true
 }, {
 	"name": "比拉夫城",
 	"mapX": 172,

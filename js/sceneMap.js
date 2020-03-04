@@ -32,7 +32,44 @@ var sceneMap = cc.Scene.extend({
 		layerSite.attr({ y: h / scale });
 		layer.addChild(layerSite);
 
-		mask = cc.LayerColor.create(funcColor('#000000'), w, h);
+		// 消息层
+		var layerInfo = cc.LayerColor.create(funcColor('#f8f8f8'), w, h / 8);
+		layerInfo.attr({
+			y: -h / 8,
+		});
+		this.addChild(layerInfo);
+
+		// 返回按钮
+		var backBtn = cc.Sprite.create(res.sprite, cc.rect(46, 312, 11, 10));
+		backBtn.attr({
+			x: w - 5.5 * scale,
+			y: h - 5 * scale,
+			anchorX: 1,
+			anchorY: 1,
+			scale: scale,
+		});
+		this.addChild(backBtn);
+		cc.eventManager.addListener({
+			event: cc.EventListener.TOUCH_ONE_BY_ONE,
+			onTouchBegan: function(touch, e) {
+				var target = e.getCurrentTarget();
+				if (target != backBtn) return false;
+
+				var loc = target.convertToNodeSpace(touch.getLocation());
+				var size = target.getContentSize();
+				var rect = cc.rect(0, 0, size.width, size.height);
+				if (!cc.rectContainsPoint(rect, loc)) return false;
+
+				var fadeIn = cc.FadeIn.create(0.5);
+				var callFunc = cc.callFunc(function() {
+					cc.director.popScene();
+				});
+				mask.runAction(cc.sequence(fadeIn, callFunc));
+			}
+		}, backBtn);
+
+		// 蒙层
+		var mask = cc.LayerColor.create(funcColor('#000000'), w, h);
 		this.addChild(mask);
 		mask.runAction(cc.fadeOut(0.5));
 
@@ -45,12 +82,13 @@ var sceneMap = cc.Scene.extend({
 		var size = 40;
 		for (var i = 0; i < data.length; i += 1) {
 			var item = data[i];
-			var sprite = cc.Sprite.create(res.sprite, cc.rect(i * size, 260, size, size));
+			var sprite = cc.Sprite.create(res.sprite, cc.rect((i + 1) * size, 260, size, size));
 			sprite.attr({
 				x: item.mapX,
 				y: -item.mapY,
 				anchorY: 0,
 				name: item.name,
+				stageNum: i,
 			});
 			layerSite.addChild(sprite);
 		}
@@ -141,6 +179,7 @@ var sceneMap = cc.Scene.extend({
 							// 底部弹出消息框
 							layerInfo.runAction(cc.moveTo(config.time, cc.p(0, 0)));
 							name.string = sprite.name;
+							name.stageNum = sprite.stageNum;
 							acceptTouch = true;
 						}, 1);
 						break;
@@ -161,13 +200,6 @@ var sceneMap = cc.Scene.extend({
 				}
 			},
 		}, bg);
-
-		// 消息层
-		var layerInfo = cc.LayerColor.create(funcColor('#f8f8f8'), w, h / 8);
-		layerInfo.attr({
-			y: -h / 8,
-		});
-		this.addChild(layerInfo);
 
 		var y0 = layerInfo.height;
 		var corner = cc.Sprite.create(res.sprite, cc.rect(0, 302, 12, 14));
@@ -267,7 +299,9 @@ var sceneMap = cc.Scene.extend({
 					mask.color = funcColor('#ffffff');
 					mask.runAction(cc.FadeIn.create(0.5));
 					name.scheduleOnce(function() {
-						cc.director.runScene(new sceneMain());
+						control.stageNum = name.stageNum;
+						var noFight = control.stageData[control.stageNum].noFight;
+						if (!noFight) cc.director.pushScene(new sceneMain());
 					}, 0.5);
 				}, 0.5);
 			}

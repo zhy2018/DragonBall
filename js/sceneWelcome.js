@@ -85,7 +85,7 @@ var sceneWelcome = cc.Scene.extend({
 			strokeStyle: cc.color(0, 0, 0, 255),
 		});
 		this.addChild(btn);
-		btn.runAction(cc.RepeatForever.create(cc.Blink.create(1, 1)));
+		btn.runAction(cc.repeatForever(cc.Blink.create(1, 1)));
 
 		var mask = cc.LayerColor.create(funcColor('#000000'), w, h);
 		mask.attr({ opacity: 0 });
@@ -103,18 +103,20 @@ var sceneWelcome = cc.Scene.extend({
 				if (!cc.rectContainsPoint(rect, loc)) return false;
 
 				btn.stopAllActions();
-				btn.runAction(cc.RepeatForever.create(cc.Blink.create(1, 5)));
-				btn.scheduleOnce(function() {
+				btn.runAction(cc.repeatForever(cc.Blink.create(1, 5)));
+				var delay = cc.delayTime(0.5);
+				var callFunc0 = cc.callFunc(function() {
 					mask.runAction(cc.FadeIn.create(0.5));
-					btn.scheduleOnce(function() {
-						cc.director.runScene(new sceneMap());
-					}, 0.5);
-				}, 0.5);
+				});
+				var callFunc1 = cc.callFunc(function() {
+					cc.director.pushScene(control.scene.map);
+				});
+				btn.runAction(cc.sequence(delay, callFunc0, delay, callFunc1));
 			}
 		}, btn);
 	},
 	onExit: function() {
 		this._super();
-		cc.eventManager.removeListener(cc.EventListener.TOUCH_ONE_BY_ONE);
+		cc.eventManager.removeAllListeners();
 	},
 });

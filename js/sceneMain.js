@@ -309,30 +309,47 @@ function funcInitFight() {
 		aniStand.addSpriteFrame(frame);
 	}
 	aniStand.setDelayPerUnit(0.1);
-	// aniStand.getFrames()[0]._delayPerUnit = 4;
 	game.hero.ani.stand = aniStand;
-	hero.runAction(cc.repeatForever(cc.animate(aniStand)));
+	funcUpdateAction('hero', [['stand', 0]]);
 
 	// 加载动作数据
 	cc.loader.loadJson(res.animation, function(_, data) {
 		var aniHit = cc.Animation.create();
-		var a = data.wukong.hit;
+		var a = data.hero.hit;
 		for (var i = 0; i < a.length; i += 1) {
-			var frame = cc.SpriteFrame.create(res.action, cc.rect(a[i][0], a[i][1], a[i][2], a[i][3]));
-			frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
-			aniHit.addSpriteFrame(frame);
+			for (var j = 0; j < a[i][5]; j += 1) {
+				var frame = cc.SpriteFrame.create(res.action, cc.rect(a[i][0], a[i][1], a[i][2], a[i][3]));
+				frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
+				aniHit.addSpriteFrame(frame);
+			}
 		}
-		aniHit.setDelayPerUnit(0.05);
+		aniHit.setDelayPerUnit(0.016);
+		// aniHit.getFrames()[0]._delayPerUnit = 10;
 		game.hero.ani.hit = aniHit;
-		// funcUpdateAction('hero', 'hit');
 	});
 }
 
 // 更新打手的动作
-// type: 0小英雄, 1坏蛋
-// status: stand站立, hit打击, defense防御, parry格挡, injured受伤, die倒地不起
-function funcUpdateAction(type, status) {
-	var boy = control.layer.fight.fighter[type];
-	boy.stopAllActions();
-	boy.runAction(cc.repeatForever(cc.animate(game[type].ani[status])));
+// roleType: 角色类型, 0小英雄, 1坏蛋; statusGroup: 状态组, 每组状态包含状态名和循环次数
+// 状态: stand站立, hit打击, defense防御, parry格挡, injured受伤, die倒地不起
+function funcUpdateAction(roleType, statusGroup) {
+	var status = statusGroup[0][0];
+	var loop = statusGroup[0][1];
+	game[roleType].status = status;
+	var sprite = control.layer.fight.fighter[roleType];
+	var animation = game[roleType].ani[status];
+	if (loop >= 2) animation.setLoops(loop); // 设置播放次数
+	var animate = cc.animate(animation);
+	if (loop <= 0) animate = cc.repeatForever(animate); // 设置循环播放
+	var work = [animate];
+
+	if (statusGroup.length >= 2 && loop >= 1) {
+		statusGroup.splice(0, 1);
+		var callFunc = cc.callFunc(function() {
+			funcUpdateAction(roleType, statusGroup);
+		});
+		work.push(callFunc);
+	}
+	sprite.stopAllActions();
+	sprite.runAction(cc.sequence(work));
 }
