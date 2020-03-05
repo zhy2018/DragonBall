@@ -19,14 +19,17 @@ var control = {
 	firstCell: false, // 第一次点击的格子(首次, 之前的)
 	currentCell: false, // 第二次点击的格子(当前的)
 	acceptTouch: false, // 是否响应触控事件
+	lockOption: false, // 在弹出对话框后, 暂时锁定玩家的所有操作, 玩家只能点击对话框里的按钮
 	stageData: [],
 	stageNum: 0,
+	stageLimit: 0,
 	sceneNum: 0,
 	scaleUI: 2,
 	scene: {
 		welcome: {},
 		map: {},
 		main: {},
+		dialog: {},
 	},
 };
 var game = {
@@ -82,7 +85,8 @@ window.onload = function() {
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
 						control.stageData = data;
-						cc.director.runScene(control.scene.welcome); // 走起
+						control.stageLimit = localStorage.getItem(funcEncrypt('stageLimit')) - 0;
+						cc.director.runScene(control.scene.welcome); // 载入首个场景
 					});
 				}, this);
 			});

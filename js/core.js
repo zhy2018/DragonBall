@@ -52,7 +52,7 @@ function funcInitStage() {
 	cc.eventManager.addListener(cc.EventListener.create({
 		event: cc.EventListener.TOUCH_ONE_BY_ONE,
 		onTouchBegan: function(touch, e) {
-			if (!control.acceptTouch) return false;
+			if (!control.acceptTouch || control.lockOption) return false;
 			var target = e.getCurrentTarget();
 			var loc  = target.convertToNodeSpace(touch.getLocation());
 			var size = target.getContentSize();

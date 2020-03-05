@@ -40,6 +40,9 @@ var sceneMain = cc.Scene.extend({
 
 		// 蒙层
 		var mask = cc.LayerColor.create(funcColor('#ffffff'));
+		funcReturnView(this, mask, function(boxVisible) {
+			control.lockOption = boxVisible;
+		});
 		this.addChild(mask);
 		control.layer.mask = mask;
 
@@ -47,7 +50,7 @@ var sceneMain = cc.Scene.extend({
 	},
 	onExit: function() {
 		this._super();
-		cc.eventManager.removeListener(cc.EventListener.TOUCH_ONE_BY_ONE);
+		cc.eventManager.removeAllListeners();
 	},
 });
 

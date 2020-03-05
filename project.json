@@ -5,9 +5,11 @@
   "renderMode": 1,
   "jsList": [
 		"js/core.js",
-    "js/tools.js",
 		"js/sceneWelcome.js",
 		"js/sceneMap.js",
-		"js/sceneMain.js"
+		"js/sceneMain.js",
+    "js/tools.js",
+		"js/base64.js",
+		"js/returnView.js"
   ]
 }

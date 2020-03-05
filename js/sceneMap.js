@@ -35,54 +35,24 @@ var sceneMap = cc.Scene.extend({
 		// 消息层
 		var layerInfo = cc.LayerColor.create(funcColor('#f8f8f8'), w, h / 8);
 		layerInfo.attr({
-			y: -h / 8,
+			// y: -h / 8,
 		});
 		this.addChild(layerInfo);
 
-		// 返回按钮
-		var backBtn = cc.Sprite.create(res.sprite, cc.rect(46, 312, 11, 10));
-		backBtn.attr({
-			x: w - 5.5 * scale,
-			y: h - 5 * scale,
-			anchorX: 1,
-			anchorY: 1,
-			scale: scale,
-		});
-		this.addChild(backBtn);
-		cc.eventManager.addListener({
-			event: cc.EventListener.TOUCH_ONE_BY_ONE,
-			onTouchBegan: function(touch, e) {
-				var target = e.getCurrentTarget();
-				if (target != backBtn) return false;
-
-				var loc = target.convertToNodeSpace(touch.getLocation());
-				var size = target.getContentSize();
-				var rect = cc.rect(0, 0, size.width, size.height);
-				if (!cc.rectContainsPoint(rect, loc)) return false;
-
-				var fadeIn = cc.FadeIn.create(0.5);
-				var callFunc = cc.callFunc(function() {
-					cc.director.popScene();
-				});
-				mask.runAction(cc.sequence(fadeIn, callFunc));
-			}
-		}, backBtn);
-
 		// 蒙层
 		var mask = cc.LayerColor.create(funcColor('#000000'), w, h);
+		funcReturnView(this, mask, function(boxVisible) {
+			control.lockOption = boxVisible;
+		});
 		this.addChild(mask);
 		mask.runAction(cc.fadeOut(0.5));
-
-		// var temp = cc.LayerColor.create(cc.color(255, 0, 0, 255), 8, 8);
-		// temp.attr({ x: (w - 8) / 2, y: (h - 8) / 2 });
-		// this.addChild(temp);
-		// temp.runAction(cc.RepeatForever.create(cc.Blink.create(1, 5)));
 
 		var data = control.stageData;
 		var size = 40;
 		for (var i = 0; i < data.length; i += 1) {
 			var item = data[i];
-			var sprite = cc.Sprite.create(res.sprite, cc.rect((i + 1) * size, 260, size, size));
+			var rectX = i <= control.stageLimit ? (i + 1) * size : 0;
+			var sprite = cc.Sprite.create(res.sprite, cc.rect(rectX, 260, size, size));
 			sprite.attr({
 				x: item.mapX,
 				y: -item.mapY,
@@ -100,6 +70,7 @@ var sceneMap = cc.Scene.extend({
 			x: data[0].mapX,
 			y: data[0].mapY,
 			anchorY: 0,
+			stageNum: 0,
 		});
 		layer.addChild(hero);
 		var aniStand = cc.Animation.create();
@@ -111,11 +82,10 @@ var sceneMap = cc.Scene.extend({
 		hero.runAction(cc.repeatForever(cc.animate(aniStand)));
 
 		var eventType = 'click'; // click or drag
-		var acceptTouch = true; // 是否响应触控事件
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: function(touch) {
-				if (!acceptTouch) return false;
+				if (control.lockOption) return false;
 
 				var loc = touch.getLocation();
 				layer.attr({
@@ -155,38 +125,44 @@ var sceneMap = cc.Scene.extend({
 				var collide = false;
 				for (var i = 0; i < layerSite.children.length; i += 1) {
 					var sprite = layerSite.children[i];
+					if (sprite.stageNum > control.stageLimit) continue;
+
 					var spriteLeft = sprite.x - sprite.width / 2;
 					var spriteRight = sprite.x + sprite.width / 2;
 					var spriteBottom = bg.height - Math.abs(sprite.y);
 					var spriteTop = spriteBottom + sprite.height;
 					collide = loc0.x >= spriteLeft && loc0.x <= spriteRight &&
 										loc0.y <= spriteTop && loc0.y >= spriteBottom;
-					if (collide) {
-						var aniGo = cc.Animation.create();
-						for (var i = 0; i < 8; i += 1) {
-							var frame = cc.SpriteFrame.create(res.action, cc.rect(i * size, 200, size, size));
-							aniGo.addSpriteFrame(frame);
-						}
-						aniGo.setDelayPerUnit(0.1);
-						acceptTouch = false;
-						hero.flippedX = sprite.x < hero.x;
-						hero.stopAllActions();
-						hero.runAction(cc.repeatForever(cc.animate(aniGo)));
-						hero.runAction(cc.jumpTo(1, cc.p(sprite.x, spriteBottom), 40, 1));
-						hero.scheduleOnce(function() {
-							hero.stopAllActions();
-							hero.runAction(cc.repeatForever(cc.animate(aniStand)));
-							// 底部弹出消息框
-							layerInfo.runAction(cc.moveTo(config.time, cc.p(0, 0)));
-							name.string = sprite.name;
-							name.stageNum = sprite.stageNum;
-							acceptTouch = true;
-						}, 1);
-						break;
+					if (!collide) continue;
+					if (sprite.stageNum === hero.stageNum) break;
+
+					var aniGo = cc.Animation.create();
+					for (var i = 0; i < 8; i += 1) {
+						var frame = cc.SpriteFrame.create(res.action, cc.rect(i * size, 200, size, size));
+						aniGo.addSpriteFrame(frame);
 					}
+					aniGo.setDelayPerUnit(0.1);
+					control.lockOption = true;
+					hero.flippedX = sprite.x < hero.x;
+					hero.stopAllActions();
+					var callFunc0 = cc.callFunc(function() {
+						hero.runAction(cc.repeatForever(cc.animate(aniGo)));
+					});
+					var jumpTo = cc.jumpTo(1, cc.p(sprite.x, spriteBottom), 40, 1);
+					var callFunc1 = cc.callFunc(function() {
+						hero.stopAllActions();
+						hero.runAction(cc.repeatForever(cc.animate(aniStand)));
+						// 底部弹出消息框
+						layerInfo.runAction(cc.moveTo(config.time, cc.p(0, 0)));
+						name.string = sprite.name;
+						name.stageNum = sprite.stageNum;
+						control.lockOption = false;
+					});
+					hero.runAction(cc.sequence(callFunc0, jumpTo, callFunc1));
+					break;
 				}
 
-				if (collide) {
+				if (collide && sprite.stageNum !== hero.stageNum) {
 					var dw = w / 2 - loc.x;
 					var dh = h / 2 - loc.y;
 					var x = layer.x + dw;
@@ -281,11 +257,15 @@ var sceneMap = cc.Scene.extend({
 			x: w / 2,
 			y: y0 / 2,
 			fillStyle: funcColor('#000000'),
+			string: data[control.stageLimit].name,
+			stageNum: control.stageLimit,
 		});
 		layerInfo.addChild(name);
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: function(touch, e) {
+				if (control.lockOption) return false;
+
 				var target = e.getCurrentTarget();
 				if (target != name) return false;
 
@@ -309,6 +289,6 @@ var sceneMap = cc.Scene.extend({
 	},
 	onExit: function() {
 		this._super();
-		cc.eventManager.removeListener(cc.EventListener.TOUCH_ONE_BY_ONE);
+		cc.eventManager.removeAllListeners();
 	},
 });

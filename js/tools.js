@@ -26,3 +26,33 @@ function funcRand(n, excludeNum) {
   }
   return num;
 }
+
+// 加密一个字符串
+function funcEncrypt(text) {
+	var s = base64encode(text);
+	s = base64encode(s);
+	s = s.substr(0, s.length - 2);
+	s = s.split('');
+	var ss = '';
+	s.map(function(chr) {
+		var c = chr.charCodeAt();
+		c = c.toString(12);
+		ss = c + ss;
+	});
+	return ss;
+}
+
+// 解密一个字符串
+function funcDecryption(text) {
+	var s = '';
+	for (var i = 0; i < text.length; i += 2) {
+		var c = text.substr(i, 2);
+		c = parseInt(c, 12);
+		c = String.fromCharCode(c);
+		s = c + s;
+	}
+	s += '==';
+	s = base64decode(s);
+	s = base64decode(s);
+	return s;
+}
