@@ -17,7 +17,7 @@ var sceneMap = cc.Scene.extend({
 		this.addChild(layer);
 
 		// 背景图
-		var bg = cc.Sprite.create(res.bg, cc.rect(0, 256, 480, 320));
+		var bg = cc.Sprite.create(res.bg, funcRect(rectData.bg.map.bg));
 		bg.attr({
 			anchorX: 0,
 			anchorY: 0,
@@ -47,7 +47,7 @@ var sceneMap = cc.Scene.extend({
 		this.addChild(mask);
 		mask.runAction(cc.fadeOut(0.5));
 
-		var data = control.stageData;
+		var data = stageData;
 		var size = 40;
 		for (var i = 0; i < data.length; i += 1) {
 			var item = data[i];
@@ -65,7 +65,7 @@ var sceneMap = cc.Scene.extend({
 
 		// 小英雄
 		size = 32;
-		var hero = cc.Sprite.create(res.action, cc.rect(0, 168, size, size));
+		var hero = cc.Sprite.create(res.action, funcRect(rectData.action.map.hero));
 		hero.attr({
 			x: data[0].mapX,
 			y: data[0].mapY,
@@ -178,7 +178,7 @@ var sceneMap = cc.Scene.extend({
 		}, bg);
 
 		var y0 = layerInfo.height;
-		var corner = cc.Sprite.create(res.sprite, cc.rect(0, 302, 12, 14));
+		var corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.corner));
 		corner.attr({
 			y: y0,
 			anchorX: 0,
@@ -186,7 +186,7 @@ var sceneMap = cc.Scene.extend({
 			scale: scale,
 		});
 		layerInfo.addChild(corner);
-		corner = cc.Sprite.create(res.sprite, cc.rect(0, 302, 12, 14));
+		corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.corner));
 		corner.attr({
 			x: w,
 			y: y0,
@@ -196,7 +196,7 @@ var sceneMap = cc.Scene.extend({
 			scale: scale,
 		});
 		layerInfo.addChild(corner);
-		corner = cc.Sprite.create(res.sprite, cc.rect(0, 302, 12, 14));
+		corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.corner));
 		corner.attr({
 			anchorX: 0,
 			anchorY: 0,
@@ -204,7 +204,7 @@ var sceneMap = cc.Scene.extend({
 			scale: scale,
 		});
 		layerInfo.addChild(corner);
-		corner = cc.Sprite.create(res.sprite, cc.rect(0, 302, 12, 14));
+		corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.corner));
 		corner.attr({
 			x: w,
 			anchorX: 1,
@@ -215,7 +215,7 @@ var sceneMap = cc.Scene.extend({
 		});
 		layerInfo.addChild(corner);
 
-		var line = cc.Sprite.create(res.sprite, cc.rect(14, 302, 1, 6));
+		var line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.line0));
 		line.attr({
 			x: w / 2,
 			y: y0,
@@ -224,7 +224,7 @@ var sceneMap = cc.Scene.extend({
 			scaleY: scale,
 		});
 		layerInfo.addChild(line);
-		line = cc.Sprite.create(res.sprite, cc.rect(14, 302, 1, 6));
+		line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.line0));
 		line.attr({
 			x: w / 2,
 			anchorY: 0,
@@ -233,7 +233,7 @@ var sceneMap = cc.Scene.extend({
 			scaleY: scale,
 		});
 		layerInfo.addChild(line);
-		line = cc.Sprite.create(res.sprite, cc.rect(0, 318, 6, 1));
+		line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.line1));
 		line.attr({
 			y: y0 / 2,
 			anchorX: 0,
@@ -241,7 +241,7 @@ var sceneMap = cc.Scene.extend({
 			scaleY: y0 - 28 * scale,
 		});
 		layerInfo.addChild(line);
-		line = cc.Sprite.create(res.sprite, cc.rect(0, 318, 6, 1));
+		line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.map.line1));
 		line.attr({
 			x: w,
 			y: y0 / 2,
@@ -280,7 +280,7 @@ var sceneMap = cc.Scene.extend({
 					mask.runAction(cc.FadeIn.create(0.5));
 					name.scheduleOnce(function() {
 						control.stageNum = name.stageNum;
-						var noFight = control.stageData[control.stageNum].noFight;
+						var noFight = stageData[control.stageNum].noFight;
 						if (!noFight) cc.director.pushScene(new sceneMain());
 					}, 0.5);
 				}, 0.5);

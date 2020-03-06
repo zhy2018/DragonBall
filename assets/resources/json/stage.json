@@ -3,30 +3,30 @@
 	"mapX": 40,
 	"mapY": 156,
 	"scene": [{
-			"bgRect": [481, 256, 262, 208],
+			"bgRect": "悟空的家_山上",
 			"bgLocation": "top",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
-			"bgRect": [745, 256, 254, 224],
-			"bgLocation": "bottom",
-			"bgColor": "#007868",
-			"autoScroll": false,
-			"enemy": []
-		},
-		{
-			"bgRect": [481, 256, 262, 208],
+			"bgRect": "悟空的家_山上",
 			"bgLocation": "center",
 			"bgColor": "#007858",
 			"autoScroll": false,
 			"enemy": []
 		},
 		{
-			"bgRect": [481, 256, 262, 208],
+			"bgRect": "悟空的家_山上",
 			"bgLocation": "bottom",
 			"bgColor": "#007858",
+			"autoScroll": false,
+			"enemy": []
+		},
+		{
+			"bgRect": "悟空的家_山下",
+			"bgLocation": "bottom",
+			"bgColor": "#007868",
 			"autoScroll": false,
 			"enemy": []
 		}
@@ -34,7 +34,19 @@
 	"hp": 256,
 	"hpFull": 256,
 	"mp": 8,
-	"mpFull": 8
+	"mpFull": 8,
+	"dialog": {
+		"before": [
+			{
+				"bgRect": [736, 480, 264, 180],
+				"role": "",
+				"text": ""
+			}
+		],
+		"after": [
+			
+		]
+	}
 }, {
 	"name": "海边龟屋",
 	"mapX": 88,

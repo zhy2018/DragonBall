@@ -56,3 +56,8 @@ function funcDecryption(text) {
 	s = base64decode(s);
 	return s;
 }
+
+// rect数组转对象
+function funcRect(arr) {
+	return cc.rect(arr[0], arr[1], arr[2], arr[3]);
+}

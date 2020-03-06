@@ -20,7 +20,7 @@ var sceneWelcome = cc.Scene.extend({
 		this.addChild(layer);
 
 		// 背景图
-		var bg = cc.Sprite.create(res.bg, cc.rect(0, 0, bgSize, 130));
+		var bg = cc.Sprite.create(res.bg, funcRect(rectData.bg.welcome.bg));
 		bg.attr({
 			anchorX: 0,
 			anchorY: 1,
@@ -68,7 +68,7 @@ var sceneWelcome = cc.Scene.extend({
 		}
 
 		// logo
-		var logo = cc.Sprite.create(res.sprite, cc.rect(0, 120, 189, 96));
+		var logo = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.welcome.logo));
 		logo.attr({
 			x: w / 2,
 			y: h / 3 * 2,

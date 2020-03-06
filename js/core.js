@@ -4,7 +4,7 @@
 // 初始化舞台上的所有格子
 function funcInitStage() {
 	var tileSize = config.tileSize, cellSize = config.cellSize;
-	var data = control.stageData[control.stageNum - 1];
+	var data = stageData[control.stageNum - 1];
 	if (data) control.maps = data.map || [];
 	else control.maps = [];
 	var maps = control.maps;
@@ -92,7 +92,7 @@ function funcInitStage() {
 	layerStage.addChild(layerStageCell);
 
 	// 格子的选择框
-	var border = cc.Sprite.create(res.sprite, cc.rect(32, 32, 30, 30));
+	var border = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.border));
 	border.attr({
 		scale: zoom,
 		visible: false,
@@ -107,12 +107,12 @@ function funcInitStage() {
 			var x = Math.round((tileSize * i + tileSize / 2) * zoom);
 			var y = Math.round((tileSize * j + tileSize / 2) * zoom);
 
-			var bg = cc.Sprite.create(res.sprite, cc.rect(0, 32, tileSize, tileSize));
+			var bg = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.cellBg));
 			bg.attr({
 				x: x,
 				y: y,
 				scale: zoom,
-				// opacity: 168,
+				opacity: 192,
 			});
 			layerStageBg.addChild(bg);
 

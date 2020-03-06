@@ -56,12 +56,12 @@ var sceneMain = cc.Scene.extend({
 
 // 初始化背景层
 function funcInitBg() {
-	var data = control.stageData[control.stageNum].scene[control.sceneNum];
+	var data = stageData[control.stageNum].scene[control.sceneNum];
 	var color = data.bgColor;
 	document.body.style.backgroundColor = color;
 	control.layer.floor.color = funcColor(color);
 
-	var rect = data.bgRect;
+	var rect = rectData.bg.main[data.bgRect];
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / rect[2];
 	scale = scale.toFixed(3) - 0;
@@ -77,7 +77,7 @@ function funcInitBg() {
 		scale: scale,
 	});
 
-	var bg0 = cc.Sprite.create(res.bg, cc.rect(rect[0], rect[1], rect[2], rect[3]));
+	var bg0 = cc.Sprite.create(res.bg, funcRect(rect));
 	bg0.attr({
 		anchorX: 0,
 		anchorY: mapping[data.bgLocation][1],
@@ -89,7 +89,7 @@ function funcInitBg() {
 			cc.moveTo(10, cc.p(-bg0.width, 0)),
 			cc.moveTo(0, cc.p(0, 0))
 		)));
-		var bg1 = cc.Sprite.create(res.bg, cc.rect(rect[0], rect[1], rect[2], rect[3]));
+		var bg1 = cc.Sprite.create(res.bg, funcRect(rect));
 		bg1.attr({
 			x: bg0.width,
 			anchorX: 0,
@@ -105,7 +105,7 @@ function funcInitBg() {
 
 // 初始化小英雄的血槽, 防御槽和气槽
 function funcInitUI() {
-	var data = control.stageData[control.stageNum];
+	var data = stageData[control.stageNum];
 	var hero = game.hero;
 	hero.hpFull = data.hpFull || config.hpLimit;
 	hero.mpFull = data.mpFull || config.mpLimit;
@@ -127,7 +127,7 @@ function funcInitUI() {
 	layerHP.attr({ y: 32 });
 	control.layer.ui.addChild(layerHP);
 
-	var hpUI = cc.Sprite.create(res.sprite, cc.rect(0, 64, 112, 32));
+	var hpUI = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.hpUI));
 	hpUI.attr({
 		anchorX: 0,
 		anchorY: 1,
@@ -165,7 +165,7 @@ function funcInitUI() {
 	layerMP.attr({ y: -32 });
 	control.layer.ui.addChild(layerMP);
 
-	var mpUI = cc.Sprite.create(res.sprite, cc.rect(2, 98, 20, 19));
+	var mpUI = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.mpUI));
 	mpUI.attr({
 		x: 8,
 		y: -(h - w - 19 * scale - 8) / scale,
@@ -177,7 +177,7 @@ function funcInitUI() {
 	var x0 = 27;
 	var ii = hero.mpFull / 8;
 	for (var i = 0; i < ii; i += 1) {
-		var mpLoader = cc.Sprite.create(res.sprite, cc.rect(24, 106, 16, 8));
+		var mpLoader = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.mpLoader));
 		mpLoader.attr({
 			x: 16 * i + x0,
 			y: mpUI.y - 7,
@@ -187,7 +187,7 @@ function funcInitUI() {
 		layerMP.addChild(mpLoader);
 	}
 
-	var mpLoader2 = cc.Sprite.create(res.sprite, cc.rect(48, 106, 5, 8));
+	var mpLoader2 = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.mpLoader2));
 	mpLoader2.attr({
 		x: 16 * ii + x0,
 		y: mpUI.y - 7,
@@ -256,7 +256,7 @@ function funcGo() {
 		ui[1].runAction(cc.moveTo(0.5, cc.p(0, 0)));
 	});
 	var callFunc1 = cc.callFunc(function() {
-		sprite = cc.Sprite.create(res.sprite, cc.rect(0, 220, 117, 36));
+		sprite = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.ready));
 		sprite.attr({
 			x: w / 2,
 			y: h / 2,
@@ -265,7 +265,7 @@ function funcGo() {
 		info.addChild(sprite);
 	});
 	var callFunc2 = cc.callFunc(function() {
-		sprite.setTextureRect(cc.rect(120, 220, 65, 35));
+		sprite.setTextureRect(funcRect(rectData.sprite.main.go));
 	});
 	var callFunc3 = cc.callFunc(function() {
 		info.removeAllChildren();
@@ -297,7 +297,7 @@ function funcInitFight() {
 	fight.fighter = fighter;
 
 	// 小英雄
-	var hero = cc.Sprite.create(res.action, cc.rect(0, 0, 32, 40));
+	var hero = cc.Sprite.create(res.action, funcRect(rectData.action.main.hero));
 	hero.attr({
 		x: w / 2,
 		anchorY: 0,
@@ -321,7 +321,7 @@ function funcInitFight() {
 		var a = data.hero.hit;
 		for (var i = 0; i < a.length; i += 1) {
 			for (var j = 0; j < a[i][5]; j += 1) {
-				var frame = cc.SpriteFrame.create(res.action, cc.rect(a[i][0], a[i][1], a[i][2], a[i][3]));
+				var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
 				frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
 				aniHit.addSpriteFrame(frame);
 			}

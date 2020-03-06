@@ -1,4 +1,4 @@
-var config, res;
+var config, res, rectData, stageData;
 var control = {
 	winWidth: 0,
 	winHeight: 0,
@@ -20,7 +20,6 @@ var control = {
 	currentCell: false, // 第二次点击的格子(当前的)
 	acceptTouch: false, // 是否响应触控事件
 	lockOption: false, // 在弹出对话框后, 暂时锁定玩家的所有操作, 玩家只能点击对话框里的按钮
-	stageData: [],
 	stageNum: 0,
 	stageLimit: 0,
 	sceneNum: 0,
@@ -73,7 +72,7 @@ window.onload = function() {
 
 		cc.loader.loadJson('config.json', function(_, data) {
 			config = data;
-			cc.loader.loadJson(config.resPath + 'json/resources.json', function(_, data) {
+			cc.loader.loadJson('resources.json', function(_, data) {
 				res = data;
 				var resData = [];
 				for (var i in res) {
@@ -84,9 +83,14 @@ window.onload = function() {
 				cc.LoaderScene.preload(resData, function() {
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
-						control.stageData = data;
+						stageData = data;
 						control.stageLimit = localStorage.getItem(funcEncrypt('stageLimit')) - 0;
-						cc.director.runScene(control.scene.welcome); // 载入首个场景
+
+						// 加载rect数据
+						cc.loader.loadJson(res.rect, function(_, data) {
+							rectData = data;
+							cc.director.runScene(control.scene.welcome); // 载入首个场景
+						});
 					});
 				}, this);
 			});
