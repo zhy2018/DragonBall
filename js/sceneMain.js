@@ -134,8 +134,10 @@ function funcInitUI() {
 	});
 	layerHP.addChild(hpUI);
 
+	var rect = rectData.sprite.main.hpBar;
 	for (var i = 116; i <= 140; i += 8) {
-		var hpBar = cc.Sprite.create(res.sprite, cc.rect(i, 81, 1, 6));
+		rect[0] = i;
+		var hpBar = cc.Sprite.create(res.sprite, funcRect(rect));
 		hpBar.attr({
 			x: 32,
 			y: -23,
@@ -196,8 +198,10 @@ function funcInitUI() {
 	});
 	layerMP.addChild(mpLoader2);
 
+	rect = rectData.sprite.main.mpBar;
 	for (var i = 58; i <= 70; i += 6) {
-		var mpBar = cc.Sprite.create(res.sprite, cc.rect(i, 108, 1, 4));
+		rect[0] = i;
+		var mpBar = cc.Sprite.create(res.sprite, funcRect(rect));
 		mpBar.attr({
 			x: x0,
 			y: mpUI.y - 13,
@@ -297,7 +301,8 @@ function funcInitFight() {
 	fight.fighter = fighter;
 
 	// 小英雄
-	var hero = cc.Sprite.create(res.action, funcRect(rectData.action.main.hero));
+	var rect = rectData.action.main.stand;
+	var hero = cc.Sprite.create(res.action, funcRect(rect));
 	hero.attr({
 		x: w / 2,
 		anchorY: 0,
@@ -308,7 +313,8 @@ function funcInitFight() {
 
 	var aniStand = cc.Animation.create();
 	for (var i = 0; i < 8; i += 1) {
-		var frame = cc.SpriteFrame.create(res.action, cc.rect(i * 32, 0, 32, 40));
+		rect[0] = i * 32;
+		var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
 		aniStand.addSpriteFrame(frame);
 	}
 	aniStand.setDelayPerUnit(0.1);

@@ -23,7 +23,7 @@ var control = {
 	stageNum: 0,
 	stageLimit: 0,
 	sceneNum: 0,
-	scaleUI: 2,
+	scaleUI: 1,
 	scene: {
 		welcome: {},
 		map: {},

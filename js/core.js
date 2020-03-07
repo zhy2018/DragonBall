@@ -99,6 +99,7 @@ function funcInitStage() {
 	});
 	layerStage.addChild(border);
 
+	var rect = rectData.sprite.main.cell;
 	for (var i = 0; i < maps.length; i += 1) {
 		for (var j = 0; j < maps[i].length; j += 1) {
 			if (!maps[i][j][1]) continue;
@@ -116,7 +117,8 @@ function funcInitStage() {
 			});
 			layerStageBg.addChild(bg);
 
-			var cell = cc.Sprite.create(res.sprite, cc.rect(num * cellSize, 0, cellSize, cellSize));
+			rect[0] = num * cellSize;
+			var cell = cc.Sprite.create(res.sprite, funcRect(rect));
 			cell.attr({
 				x: x,
 				y: y,
@@ -408,6 +410,7 @@ function funcFill() {
 	var mapSize = control.mapSize, zoom = control.zoom;
 	var distance = 0, distanceMax = 0;
 
+	var rect = rectData.sprite.main.cell;
 	for (var i = 0; i < maps.length; i += 1) {
 		distance = mapSize - maps[i].length;
 		if (distance > distanceMax) distanceMax = distance;
@@ -419,7 +422,8 @@ function funcFill() {
 			var y0 = Math.round((tileSize * (mapSize + k) + tileSize / 2) * zoom);
 			var y1 = Math.round((tileSize * j + tileSize / 2) * zoom);
 
-			var cell = cc.Sprite.create(res.sprite, cc.rect(num * cellSize, 0, cellSize, cellSize));
+			rect[0] = num * cellSize;
+			var cell = cc.Sprite.create(res.sprite, funcRect(rect));
 			cell.attr({
 				x: x,
 				y: y0,

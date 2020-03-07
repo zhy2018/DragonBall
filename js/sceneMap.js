@@ -47,12 +47,14 @@ var sceneMap = cc.Scene.extend({
 		this.addChild(mask);
 		mask.runAction(cc.fadeOut(0.5));
 
+		// 地点
 		var data = stageData;
 		var size = 40;
+		var rect = rectData.sprite.map.site;
 		for (var i = 0; i < data.length; i += 1) {
 			var item = data[i];
-			var rectX = i <= control.stageLimit ? (i + 1) * size : 0;
-			var sprite = cc.Sprite.create(res.sprite, cc.rect(rectX, 260, size, size));
+			rect[0] = i <= control.stageLimit ? (i + 1) * size : 0;
+			var sprite = cc.Sprite.create(res.sprite, funcRect(rect));
 			sprite.attr({
 				x: item.mapX,
 				y: -item.mapY,
@@ -65,7 +67,8 @@ var sceneMap = cc.Scene.extend({
 
 		// 小英雄
 		size = 32;
-		var hero = cc.Sprite.create(res.action, funcRect(rectData.action.map.hero));
+		var rect = rectData.action.map.stand;
+		var hero = cc.Sprite.create(res.action, funcRect(rect));
 		hero.attr({
 			x: data[0].mapX,
 			y: data[0].mapY,
@@ -75,7 +78,8 @@ var sceneMap = cc.Scene.extend({
 		layer.addChild(hero);
 		var aniStand = cc.Animation.create();
 		for (var i = 0; i < 4; i += 1) {
-			var frame = cc.SpriteFrame.create(res.action, cc.rect(i * size, 168, size, size));
+			rect[0] = i * size;
+			var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
 			aniStand.addSpriteFrame(frame);
 		}
 		aniStand.setDelayPerUnit(0.2);
@@ -136,9 +140,11 @@ var sceneMap = cc.Scene.extend({
 					if (!collide) continue;
 					if (sprite.stageNum === hero.stageNum) break;
 
+					var rect = rectData.action.map.go;
 					var aniGo = cc.Animation.create();
 					for (var i = 0; i < 8; i += 1) {
-						var frame = cc.SpriteFrame.create(res.action, cc.rect(i * size, 200, size, size));
+						rect[0] = i * size;
+						var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
 						aniGo.addSpriteFrame(frame);
 					}
 					aniGo.setDelayPerUnit(0.1);

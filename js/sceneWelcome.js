@@ -2,7 +2,8 @@ var sceneWelcome = cc.Scene.extend({
 	onEnter: function() {
 		this._super();
 		var w = control.winWidth, h = control.winHeight;
-		var bgSize = 256;
+		var rect = rectData.bg.welcome.bg;
+		var bgSize = rect[2];
 		var scaleX = w / bgSize;
 		scaleX = scaleX.toFixed(3) - 0;
 		var scaleY = h / bgSize;
@@ -20,7 +21,7 @@ var sceneWelcome = cc.Scene.extend({
 		this.addChild(layer);
 
 		// 背景图
-		var bg = cc.Sprite.create(res.bg, funcRect(rectData.bg.welcome.bg));
+		var bg = cc.Sprite.create(res.bg, funcRect(rect));
 		bg.attr({
 			anchorX: 0,
 			anchorY: 1,
@@ -29,7 +30,7 @@ var sceneWelcome = cc.Scene.extend({
 
 		// 云朵, 青山, 浮云 [y, height]
 		var datas = [
-			[0, 30], [63, 32], [96, 21], [119, 7],
+			[0, 30], [63, 32], [96, 21], [117, 9],
 			[130, 80], [210, 16], [226, 14], [240, 16],
 		];
 		var times = [2, 3, 4, 8, 10, 5, 3, 2];
@@ -38,7 +39,7 @@ var sceneWelcome = cc.Scene.extend({
 			var time = times[i];
 			var sprite = cc.Sprite.create(
 				res.bg,
-				cc.rect(i < 4 ? bg.width : 0, data[0], bg.width, data[1])
+				cc.rect(i < 4 ? bg.width + 2 : 1, data[0], bg.width, data[1])
 			);
 			sprite.attr({
 				y: -data[0],
@@ -52,7 +53,7 @@ var sceneWelcome = cc.Scene.extend({
 			)));
 
 			if (i >= 4) {
-				var sprite2 = cc.Sprite.create(res.bg, cc.rect(0, data[0], bg.width, data[1]));
+				var sprite2 = cc.Sprite.create(res.bg, cc.rect(1, data[0], bg.width, data[1]));
 				sprite2.attr({
 					x: bg.width,
 					y: -data[0],
