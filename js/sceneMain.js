@@ -199,8 +199,8 @@ function funcInitUI() {
 	layerMP.addChild(mpLoader2);
 
 	rect = rectData.sprite.main.mpBar;
-	for (var i = 58; i <= 70; i += 6) {
-		rect[0] = i;
+	for (var i = 0; i < 3; i += 1) {
+		rect[0] += i * 6;
 		var mpBar = cc.Sprite.create(res.sprite, funcRect(rect));
 		mpBar.attr({
 			x: x0,

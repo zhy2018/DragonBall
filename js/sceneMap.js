@@ -286,8 +286,10 @@ var sceneMap = cc.Scene.extend({
 					mask.runAction(cc.FadeIn.create(0.5));
 					name.scheduleOnce(function() {
 						control.stageNum = name.stageNum;
-						var noFight = stageData[control.stageNum].noFight;
-						if (!noFight) cc.director.pushScene(new sceneMain());
+						control.story = stageData[control.stageNum].before;
+						control.storyAt = control.story ? 'before' : 'after';
+						var scene = control.story ? control.scene.dialog : control.scene.main;
+						cc.director.pushScene(scene);
 					}, 0.5);
 				}, 0.5);
 			}

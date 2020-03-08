@@ -30,6 +30,8 @@ var control = {
 		main: {},
 		dialog: {},
 	},
+	story: '', // 当前故事
+	storyAt: 'before' // before or after,
 };
 var game = {
 	hero: {
@@ -68,6 +70,7 @@ window.onload = function() {
 			welcome: new sceneWelcome(),
 			map: new sceneMap(),
 			main: new sceneMain(),
+			dialog: new sceneDialog(),
 		};
 
 		cc.loader.loadJson('config.json', function(_, data) {

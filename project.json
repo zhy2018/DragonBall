@@ -8,6 +8,7 @@
 		"js/sceneWelcome.js",
 		"js/sceneMap.js",
 		"js/sceneMain.js",
+		"js/sceneDialog.js",
     "js/tools.js",
 		"js/base64.js",
 		"js/returnView.js"

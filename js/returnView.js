@@ -4,7 +4,7 @@ function funcReturnView(context, mask, cb) {
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / 256;
 	scale = scale.toFixed(3) - 0;
-	var btn = cc.Sprite.create(res.sprite, cc.rect(46, 312, 11, 10));
+	var btn = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.btn));
 	btn.attr({
 		x: w - 5.5 * scale,
 		y: h - 5 * scale,
@@ -52,13 +52,13 @@ function funcReturnView(context, mask, cb) {
 	});
 	context.addChild(box);
 
-	var corner = cc.Sprite.create(res.sprite, cc.rect(36, 302, 4, 7));
+	var corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.corner));
 	corner.attr({
 		y: boxH,
 		scale: scale,
 	});
 	box.addChild(corner);
-	corner = cc.Sprite.create(res.sprite, cc.rect(36, 302, 4, 7));
+	corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.corner));
 	corner.attr({
 		x: boxW,
 		y: boxH,
@@ -66,13 +66,13 @@ function funcReturnView(context, mask, cb) {
 		scale: scale,
 	});
 	box.addChild(corner);
-	corner = cc.Sprite.create(res.sprite, cc.rect(36, 302, 4, 7));
+	corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.corner));
 	corner.attr({
 		flippedY: true,
 		scale: scale,
 	});
 	box.addChild(corner);
-	corner = cc.Sprite.create(res.sprite, cc.rect(36, 302, 4, 7));
+	corner = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.corner));
 	corner.attr({
 		x: boxW,
 		flippedX: true,
@@ -81,7 +81,7 @@ function funcReturnView(context, mask, cb) {
 	});
 	box.addChild(corner);
 
-	var line = cc.Sprite.create(res.sprite, cc.rect(41, 302, 1, 7));
+	var line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.line0));
 	line.attr({
 		x: boxW / 2,
 		y: boxH,
@@ -89,7 +89,7 @@ function funcReturnView(context, mask, cb) {
 		scaleY: scale,
 	});
 	box.addChild(line);
-	line = cc.Sprite.create(res.sprite, cc.rect(41, 302, 1, 7));
+	line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.line0));
 	line.attr({
 		x: boxW / 2,
 		flippedY: true,
@@ -97,14 +97,14 @@ function funcReturnView(context, mask, cb) {
 		scaleY: scale,
 	});
 	box.addChild(line);
-	line = cc.Sprite.create(res.sprite, cc.rect(36, 308, 4, 1));
+	line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.line1));
 	line.attr({
 		y: boxH / 2,
 		scaleX: scale,
 		scaleY: boxH - 4 * scale,
 	});
 	box.addChild(line);
-	line = cc.Sprite.create(res.sprite, cc.rect(36, 308, 4, 1));
+	line = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.line1));
 	line.attr({
 		x: boxW,
 		y: boxH / 2,
@@ -114,7 +114,7 @@ function funcReturnView(context, mask, cb) {
 	});
 	box.addChild(line);
 
-	var title = cc.Sprite.create(res.sprite, cc.rect(46, 302, 41, 7));
+	var title = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.title));
 	title.attr({
 		x: boxW / 2,
 		y: boxH,
@@ -139,7 +139,7 @@ function funcReturnView(context, mask, cb) {
 	});
 	box.addChild(btnNo);
 
-	var iconYes = cc.Sprite.create(res.sprite, cc.rect(36, 312, 6, 6));
+	var iconYes = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.dot0));
 	iconYes.attr({
 		x: btnYes.width / 2,
 		y: btnYes.height / 2,
@@ -147,7 +147,7 @@ function funcReturnView(context, mask, cb) {
 		scale: scale,
 	});
 	btnYes.addChild(iconYes);
-	var iconNo = cc.Sprite.create(res.sprite, cc.rect(36, 320, 6, 6));
+	var iconNo = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.dot1));
 	iconNo.attr({
 		x: btnNo.width / 2,
 		y: btnNo.height / 2,
@@ -190,7 +190,7 @@ function funcReturnView(context, mask, cb) {
 			var callFunc1 = cc.callFunc(function() {
 				box.visible = false;
 				cb(box.visible);
-				cc.director.popScene();
+				cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面
 			});
 			var delay = cc.delayTime(0.5);
 			box.runAction(cc.sequence(scaleTo, callFunc0, delay, callFunc1));
