@@ -123,6 +123,7 @@ var sceneDialog = cc.Scene.extend({
 
 		// 下一步按钮
 		var rect = rectData.sprite.dialog.ball;
+		rect = JSON.parse(JSON.stringify(rect)); // 下面涉及到了写操作, 所以要复制一份出来, 防止污染涞源
 		var btn = cc.Sprite.create(res.sprite, funcRect(rect));
 		btn.attr({
 			x: w - btn.width / 2 * scale,
@@ -145,6 +146,8 @@ var sceneDialog = cc.Scene.extend({
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: function(touch, e) {
+				if (control.lockOption) return false;
+
 				var target = e.getCurrentTarget();
 				if (target != btn) return false;
 
@@ -154,7 +157,7 @@ var sceneDialog = cc.Scene.extend({
 				if (!cc.rectContainsPoint(rect, loc)) return false;
 
 				index += 1;
-				if (index < control.story.length) funcShow(index, text, bg, btn);
+				if (index < control.story.length) funcShow();
 				else {
 					if (control.storyAt === 'before') cc.director.pushScene(control.scene.main);
 					else cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面
@@ -162,49 +165,61 @@ var sceneDialog = cc.Scene.extend({
 			}
 		}, btn);
 
-		funcShow(index, text, bg, btn);
+		funcShow();
+		// 显示台词, 背景, 人物
+		function funcShow() {
+			var time = config.time;
+
+			var callFunc00 = cc.callFunc(function() {
+				control.lockOption = true; // 暂时锁住玩家操作, 防止狂点
+				btn.attr({ visible: false });
+			});
+
+			var callFunc0 = cc.callFunc(function() {
+				text.attr({ string: '' });
+			});
+
+			var callFunc1 = cc.callFunc(function() {
+				btn.attr({ visible: true });
+				control.lockOption = false; // 放开锁定
+			});
+
+			control.story = stageData[control.stageNum].before;
+
+			var item = control.story[index];
+			var work = [callFunc00];
+
+			if (item.bg !== undefined) {
+				// 切换背景
+				var callFunc3 = cc.callFunc(function() {
+					var rect = item.bg != '' ? rectData.bg.dialog[item.bg] : [0,0,0,0];
+					bg.setTextureRect(funcRect(rect));
+				});
+				work.push(cc.fadeOut(time));
+				work.push(callFunc3);
+				work.push(callFunc0);
+				work.push(cc.fadeIn(time));
+			} else work.push(callFunc0);
+
+			var textWork = [];
+			var string = '';
+			for (var i = 0; i < item.text.length; i += 1) {
+				textWork.push(cc.callFunc(function() {
+					string += item.text[string.length];
+					text.attr({ string: string });
+				}));
+				textWork.push(cc.delayTime(0.1));
+			}
+			box.runAction(cc.sequence(textWork));
+
+			work.push(cc.delayTime(0.1 * item.text.length));
+			work.push(callFunc1);
+
+			bg.runAction(cc.sequence(work));
+		}
 	},
 	onExit: function() {
 		this._super();
 		cc.eventManager.removeAllListeners();
 	},
 });
-
-// 显示台词, 背景, 人物
-function funcShow(index, text, bg, btn) {
-	var time = config.time;
-
-	btn.attr({ visible: false });
-
-	var callFunc0 = cc.callFunc(function() {
-		text.attr({ string: '' });
-	});
-
-	var callFunc1 = cc.callFunc(function() {
-		text.attr({ string: item.text });
-	});
-
-	var callFunc2 = cc.callFunc(function() {
-		btn.attr({ visible: true });
-	});
-
-	var item = control.story[index];
-	var work = [];
-
-	if (item.bg !== undefined) {
-		// 切换背景
-		var callFunc3 = cc.callFunc(function() {
-			var rect = item.bg != '' ? rectData.bg.dialog[item.bg] : [0,0,0,0];
-			bg.setTextureRect(funcRect(rect));
-		});
-		work.push(cc.fadeOut(time));
-		work.push(callFunc3);
-		work.push(callFunc0);
-		work.push(cc.fadeIn(time));
-	}
-
-	work.push(callFunc1);
-	work.push(callFunc2);
-
-	bg.runAction(cc.sequence(work));
-}

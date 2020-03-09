@@ -41,9 +41,7 @@ var sceneMap = cc.Scene.extend({
 
 		// 蒙层
 		var mask = cc.LayerColor.create(funcColor('#000000'), w, h);
-		funcReturnView(this, mask, function(boxVisible) {
-			control.lockOption = boxVisible;
-		});
+		funcReturnView(this, mask, true);
 		this.addChild(mask);
 		mask.runAction(cc.fadeOut(0.5));
 

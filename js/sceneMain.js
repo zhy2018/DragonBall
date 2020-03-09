@@ -40,7 +40,7 @@ var sceneMain = cc.Scene.extend({
 
 		// 蒙层
 		var mask = cc.LayerColor.create(funcColor('#ffffff'));
-		funcReturnView(this, mask, function(boxVisible) {
+		funcReturnView(this, mask, false, function(boxVisible) {
 			control.lockOption = boxVisible;
 		});
 		this.addChild(mask);

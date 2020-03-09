@@ -19,8 +19,8 @@ var control = {
 	firstCell: false, // 第一次点击的格子(首次, 之前的)
 	currentCell: false, // 第二次点击的格子(当前的)
 	acceptTouch: false, // 是否响应触控事件
-	lockOption: false, // 在弹出对话框后, 暂时锁定玩家的所有操作, 玩家只能点击对话框里的按钮
-	stageNum: 0,
+	lockOption: false, // 锁定玩家的所有操作
+	stageNum: 1,
 	stageLimit: 0,
 	sceneNum: 0,
 	scaleUI: 1,
@@ -92,7 +92,7 @@ window.onload = function() {
 						// 加载rect数据
 						cc.loader.loadJson(res.rect, function(_, data) {
 							rectData = data;
-							cc.director.runScene(control.scene.welcome); // 载入首个场景
+							cc.director.runScene(control.scene.dialog); // 载入首个场景
 						});
 					});
 				}, this);
