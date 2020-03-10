@@ -29,8 +29,22 @@ var sceneDialog = cc.Scene.extend({
 		});
 		panel.addChild(bg);
 
-		// 文本框
+		// 角色
 		var boxH = rect[3] / 3 * 2 * scale;
+		var role0 = cc.Sprite.create(res.sprite, funcRect([0,0,0,0]));
+		role0.attr({
+			anchorY: 0,
+			scale: scale,
+		});
+		panel.addChild(role0);
+		var role1 = cc.Sprite.create(res.sprite, funcRect([0,0,0,0]));
+		role1.attr({
+			anchorY: 0,
+			scale: scale,
+		});
+		panel.addChild(role1);
+
+		// 文本框
 		var box = cc.LayerColor.create(funcColor('#E0E0F8'), w, boxH);
 		panel.addChild(box);
 
@@ -184,7 +198,7 @@ var sceneDialog = cc.Scene.extend({
 				control.lockOption = false; // 放开锁定
 			});
 
-			control.story = stageData[control.stageNum].before;
+			// control.story = stageData[control.stageNum].before;
 
 			var item = control.story[index];
 			var work = [callFunc00];
@@ -201,6 +215,11 @@ var sceneDialog = cc.Scene.extend({
 				work.push(cc.fadeIn(time));
 			} else work.push(callFunc0);
 
+			// 显示人物头像
+			if (item.role0) work.push(funcRole(item.role0, role0));
+			if (item.role1) work.push(funcRole(item.role1, role1));
+
+			// 打字机特效
 			var textWork = [];
 			var string = '';
 			for (var i = 0; i < item.text.length; i += 1) {
@@ -208,14 +227,55 @@ var sceneDialog = cc.Scene.extend({
 					string += item.text[string.length];
 					text.attr({ string: string });
 				}));
-				textWork.push(cc.delayTime(0.1));
+				textWork.push(cc.delayTime(0.05));
 			}
 			box.runAction(cc.sequence(textWork));
 
-			work.push(cc.delayTime(0.1 * item.text.length));
+			work.push(cc.delayTime(0.05 * item.text.length));
 			work.push(callFunc1);
 
 			bg.runAction(cc.sequence(work));
+		}
+
+		// 人物头像动画
+		function funcRole(obj, sprite) {
+			return cc.callFunc(function() {
+				if (obj.flip) sprite.flippedX = true;
+				else if (obj.flip === false) sprite.flippedX = false;
+				if (obj.action === 'fadeIn') sprite.opacity = 0;
+				sprite.setTextureRect(funcRect(rectData.sprite.dialog[obj.name]));
+				switch (obj.from) {
+					case 'bottom':
+						sprite.attr({ x: w / 2 });
+						break;
+					case 'leftOutside':
+						sprite.attr({
+							x: -sprite.width / 2 * scale,
+							y: boxH,
+						});
+						break;
+					default:
+						break;
+				}
+				var endValue;
+				switch (obj.to) {
+					case 'center':
+						endValue = cc.p(w / 2, boxH);
+						break;
+					case 'left':
+						endValue = cc.p(w / 7 * 1.5, boxH);
+						break;
+					case 'right':
+						endValue = cc.p(w / 7 * 6, boxH);
+						break;
+					case 'rightOutside':
+						endValue = cc.p(w + sprite.width / 2 * scale, boxH);
+						break;
+					default:
+						break;
+				}
+				sprite.runAction(cc[obj.action](config.time, endValue));
+			});
 		}
 	},
 	onExit: function() {
