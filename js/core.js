@@ -113,7 +113,7 @@ function funcInitStage() {
 				x: x,
 				y: y,
 				scale: zoom,
-				opacity: 192,
+				// opacity: 192,
 			});
 			layerStageBg.addChild(bg);
 

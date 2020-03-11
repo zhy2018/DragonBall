@@ -68,10 +68,10 @@ var sceneMap = cc.Scene.extend({
 		var rect = rectData.action.map.stand;
 		var hero = cc.Sprite.create(res.action, funcRect(rect));
 		hero.attr({
-			x: data[0].mapX,
-			y: data[0].mapY,
+			x: data[control.stageLimit].mapX,
+			y: bg.height - Math.abs(data[control.stageLimit].mapY),
 			anchorY: 0,
-			stageNum: 0,
+			stageNum: control.stageLimit,
 		});
 		layer.addChild(hero);
 		var aniStand = cc.Animation.create();
@@ -154,12 +154,12 @@ var sceneMap = cc.Scene.extend({
 					});
 					var jumpTo = cc.jumpTo(1, cc.p(sprite.x, spriteBottom), 40, 1);
 					var callFunc1 = cc.callFunc(function() {
+						hero.stageNum = sprite.stageNum;
 						hero.stopAllActions();
 						hero.runAction(cc.repeatForever(cc.animate(aniStand)));
 						// 底部弹出消息框
 						layerInfo.runAction(cc.moveTo(config.time, cc.p(0, 0)));
 						name.string = sprite.name;
-						name.stageNum = sprite.stageNum;
 						control.lockOption = false;
 					});
 					hero.runAction(cc.sequence(callFunc0, jumpTo, callFunc1));
@@ -262,7 +262,6 @@ var sceneMap = cc.Scene.extend({
 			y: y0 / 2,
 			fillStyle: funcColor('#000000'),
 			string: data[control.stageLimit].name,
-			stageNum: control.stageLimit,
 		});
 		layerInfo.addChild(name);
 		cc.eventManager.addListener({
@@ -283,7 +282,7 @@ var sceneMap = cc.Scene.extend({
 					mask.color = funcColor('#ffffff');
 					mask.runAction(cc.FadeIn.create(0.5));
 					name.scheduleOnce(function() {
-						control.stageNum = name.stageNum;
+						control.stageNum = hero.stageNum;
 						control.story = stageData[control.stageNum].before;
 						control.storyAt = control.story ? 'before' : 'after';
 						var scene = control.story ? control.scene.dialog : control.scene.main;

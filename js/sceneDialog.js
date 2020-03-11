@@ -173,7 +173,8 @@ var sceneDialog = cc.Scene.extend({
 				index += 1;
 				if (index < control.story.length) funcShow();
 				else {
-					if (control.storyAt === 'before') cc.director.pushScene(control.scene.main);
+					if (control.storyAt === 'before' && !stageData[control.stageNum].noFight)
+						cc.director.pushScene(control.scene.main);
 					else cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面
 				}
 			}
@@ -243,8 +244,26 @@ var sceneDialog = cc.Scene.extend({
 				if (obj.flip) sprite.flippedX = true;
 				else if (obj.flip === false) sprite.flippedX = false;
 				if (obj.action === 'fadeIn') sprite.opacity = 0;
-				sprite.setTextureRect(funcRect(rectData.sprite.dialog[obj.name]));
+				if (obj.name) sprite.setTextureRect(funcRect(rectData.sprite.dialog[obj.name]));
 				switch (obj.from) {
+					case 'center':
+						sprite.attr({
+							x: w / 2,
+							y: boxH,
+						});
+						break;
+					case 'right':
+						sprite.attr({
+							x: w / 7 * 6,
+							y: boxH,
+						});
+						break;
+					case 'rightOutside':
+						sprite.attr({
+							x: w + sprite.width / 2 * scale,
+							y: boxH,
+						});
+						break;
 					case 'bottom':
 						sprite.attr({ x: w / 2 });
 						break;
@@ -274,7 +293,7 @@ var sceneDialog = cc.Scene.extend({
 					default:
 						break;
 				}
-				sprite.runAction(cc[obj.action](config.time, endValue));
+				if (obj.action) sprite.runAction(cc[obj.action](config.time, endValue));
 			});
 		}
 	},

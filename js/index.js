@@ -87,7 +87,8 @@ window.onload = function() {
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
 						stageData = data;
-						control.stageLimit = localStorage.getItem(funcEncrypt('stageLimit')) - 0;
+						var probe = localStorage.getItem(funcEncrypt('stageLimit'));
+						control.stageLimit = funcDecryption(probe) - 0;
 
 						// 加载rect数据
 						cc.loader.loadJson(res.rect, function(_, data) {

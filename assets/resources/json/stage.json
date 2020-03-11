@@ -168,13 +168,111 @@
 	"hp": 256,
 	"hpFull": 256,
 	"mp": 8,
-	"mpFull": 8
+	"mpFull": 8,
+	"before": [{
+		"text": "156 3550 9827\n接下来，小悟空和布尔玛\n来到了下一个目的地。",
+		"bg": "村子"
+	}, {
+		"text": "这里是一个小村子，\n但却被一个叫乌龙的\n可恶家伙成天捣乱。",
+		"role0": {
+			"name": "乌龙",
+			"flip": true,
+			"action": "fadeIn",
+			"from": "center"
+		}
+	}, {
+		"text": "悟空为了交换村人手上的龙珠，\n答应帮助村人消灭乌龙。"
+	}, {
+		"text": "接着，悟空和乌龙较量了一场。",
+		"role0": {
+			"name": "乌龙",
+			"action": "moveTo",
+			"to": "right"
+		},
+		"role1": {
+			"name": "悟空",
+			"action": "moveTo",
+			"from": "leftOutside",
+			"to": "left"
+		}
+	}, {
+		"text": "悟空发现，那个可恶的乌龙\n其实只不过是\n稍微会点变身术而已。"
+	}, {
+		"text": "事实上乌龙是个很弱的家伙，\n并没有传言说的那么可怕，\n事情一败露，乌龙立马就逃跑。"
+	}, {
+		"text": "乌龙：\n“可恶！看来时运不佳，\n还是走为上策吧！”",
+		"role0": {
+			"name": "乌龙",
+			"action": "moveTo",
+			"to": "rightOutside"
+		}
+	}, {
+		"text": "悟空：\n“啊！站住！\n你逃不了的！！”",
+		"role1": {
+			"name": "悟空战斗"
+		}
+	}, {
+		"text": "就这样，乌龙败露逃跑，\n悟空紧追不舍。\n舞台转向空中！",
+		"role1": {
+			"name": "悟空战斗",
+			"action": "moveTo",
+			"to": "rightOutside"
+		}
+	}],
+	"after": [{
+		"text": "乌龙：\n“惨，惨了！\n请你饶了我吧！！”",
+		"role0": {
+			"name": "乌龙",
+			"action": "fadeIn",
+			"from": "right"
+		}
+	}, {
+		"text": "悟空：\n“你这家伙，整天装神弄鬼，\n搞的村子不得安宁！”",
+		"role1": {
+			"name": "悟空",
+			"action": "moveTo",
+			"from": "leftOutside",
+			"to": "left"
+		}
+	}, {
+		"text": "悟空：\n“等一下跟我回村子，\n向大家道歉哦！”"
+	}, {
+		"text": "乌龙：\n“遵命，原谅我这次，\n以后我再也不干坏事了。”"
+	}, {
+		"text": "布尔玛：\n“哈哈哈，不过，也多亏你，\n我们才能把龙珠搞到手！”",
+		"role1": {
+			"name": "布尔玛笑",
+			"action": "fadeIn"
+		}
+	}, {
+		"text": "布尔玛：\n“真是太好了啊！\n过来看看，是六星球耶！”"
+	}, {
+		"text": "布尔玛：\n“好啦！接下来我们去找\n一下颗龙珠吧！”",
+		"role0": {
+			"name": "乌龙",
+			"action": "fadeOut"
+		},
+		"role1": {
+			"name": "布尔玛笑",
+			"action": "moveTo",
+			"to": "center"
+		}
+	}, {
+		"text": "就这样，寻找龙珠的悟空和布尔玛，\n意想不到和乌龙\n成为了一起冒险的伙伴。",
+		"bg": "",
+		"role1": {
+			"name": "布尔玛笑",
+			"action": "fadeOut"
+		}
+	}, {
+		"text": "再次开始了他们的冒险旅行！"
+	}]
 }, {
 	"name": "荒野",
 	"mapX": 48,
 	"mapY": 64,
 	"scene": [{
-		"bgRect": [736, 480, 264, 180],
+		"bgRect": "荒野",
 		"bgLocation": "bottom",
 		"bgColor": "#f0e098",
 		"autoScroll": false,
@@ -183,7 +281,42 @@
 	"hp": 256,
 	"hpFull": 256,
 	"mp": 8,
-	"mpFull": 8
+	"mpFull": 8,
+	"after": [{
+		"text": "悟空：\n“怎，怎么了？\n怎么，突然跑了？”",
+		"bg": "荒野",
+		"role0": {
+			"name": "悟空",
+			"action": "moveTo",
+			"from": "leftOutside",
+			"to": "left"
+		}
+	}, {
+		"text": "悟空：\n“这样就逃跑了，\n这家伙真不够意思。”"
+	}, {
+		"text": "布尔玛：\n“想不到这种地方竟然有\n这样迷人的大帅哥耶！”",
+		"role1": {
+			"name": "布尔玛兔子装",
+			"flip": true,
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "right"
+		}
+	}, {
+		"text": "布尔玛：\n“先不说这些了，看前面\n我们准备到火焰山了哦！”"
+	}, {
+		"text": "乌龙：\n“真是的，为什么连我也要去那。”",
+		"role0": {
+			"name": "乌龙",
+			"flip": true,
+			"action": "fadeIn",
+			"from": "center"
+		},
+		"role1": {
+			"name": "布尔玛兔子装",
+			"action": "fadeOut"
+		}
+	}]
 }, {
 	"name": "火焰山",
 	"mapX": 132,
