@@ -244,6 +244,7 @@ var sceneDialog = cc.Scene.extend({
 				if (obj.flip) sprite.flippedX = true;
 				else if (obj.flip === false) sprite.flippedX = false;
 				if (obj.action === 'fadeIn') sprite.opacity = 0;
+				else sprite.opacity = 255;
 				if (obj.name) sprite.setTextureRect(funcRect(rectData.sprite.dialog[obj.name]));
 				switch (obj.from) {
 					case 'center':
@@ -282,7 +283,7 @@ var sceneDialog = cc.Scene.extend({
 						endValue = cc.p(w / 2, boxH);
 						break;
 					case 'left':
-						endValue = cc.p(w / 7 * 1.5, boxH);
+						endValue = cc.p(w / 7 * 1.3, boxH);
 						break;
 					case 'right':
 						endValue = cc.p(w / 7 * 6, boxH);

@@ -326,6 +326,7 @@ function funcInitFight() {
 		var aniHit = cc.Animation.create();
 		var a = data.hero.hit;
 		for (var i = 0; i < a.length; i += 1) {
+			// 帧延迟
 			for (var j = 0; j < a[i][5]; j += 1) {
 				var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
 				frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确

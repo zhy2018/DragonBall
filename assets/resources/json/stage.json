@@ -321,7 +321,152 @@
 	"name": "火焰山",
 	"mapX": 132,
 	"mapY": 72,
-	"noFight": true
+	"noFight": true,
+	"before": [{
+		"text": "悟空他们终于到达了\n下一个目的地——火焰山。",
+		"bg": "火焰山"
+	}, {
+		"text": "在山上有座城，\n可是有一个可怕的\n牛魔王住在那里。"
+	}, {
+		"text": "但让人意想不到的是牛魔王\n竟然是武天老师龟仙人的弟子。",
+		"role0": {
+			"name": "牛魔王",
+			"action": "fadeIn",
+			"from": "center"
+		}
+	}, {
+		"text": "接着，悟空他们为了扑灭\n城里的大火拿到龙珠。"
+	}, {
+		"text": "特地请龟仙人来帮忙，\n想拜托他把火焰山的大火扑灭。"
+	}, {
+		"text": "龟仙人来到后，\n答应了他们的请求，\n准备开始扑灭大火……",
+		"role0": {
+			"name": "牛魔王",
+			"action": "fadeOut"
+		},
+		"role1": {
+			"name": "龟仙人",
+			"flip": true,
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "right"
+		}
+	}, {
+		"text": "龟仙人：\n神——龟——冲——击——\n波！！！",
+		"bg": "龟仙人气功",
+		"role1": {
+			"name": "龟仙人",
+			"action": "fadeOut"
+		}
+	}, {
+		"text": "神龟冲击波把城里的大火\n扑灭得干干净净。",
+		"bg": "田野"
+	}, {
+		"text": "悟空：\n“好，好，好厉害啊……”",
+		"role0": {
+			"name": "悟空惊讶",
+			"action": "moveTo",
+			"from": "leftOutside",
+			"to": "left"
+		}
+	}, {
+		"text": "悟空：\n“好厉害的绝招！！老爷爷，\n把这招教给我吧！”",
+		"role0": {
+			"name": "悟空笑",
+			"action": "fadeIn"
+		}
+	}, {
+		"text": "龟仙人：\n“哈哈哈，想学会神龟冲击波，\n起码得五十年以上的修行才行……”",
+		"role1": {
+			"name": "龟仙人",
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "right"
+		}
+	}, {
+		"text": "龟仙人：\n“算了，看你也想学，\n我就稍微教你点好了……”"
+	}, {
+		"text": "龟仙人：\n“神龟冲击波，就是把气集到一处，\n然后一口气释放的绝招。”",
+		"role0": {
+			"name": "悟空笑",
+			"action": "fadeOut"
+		},
+		"role1": {
+			"name": "龟仙人",
+			"action": "moveTo",
+			"to": "center"
+		}
+	}, {
+		"text": "龟仙人：\n“按住(武)字集气,然后,再放出来。\n那么，试一招让我看看。”"
+	}, {
+		"text": "龟仙人：\n“这，这到底，到底，\n你是谁啊？”",
+		"role1": {
+			"name": "龟仙人",
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "right"
+		}
+	}, {
+		"text": "龟仙人：\n“……这样啊，你竟然是\n悟饭的孙子啊！”"
+	}, {
+		"text": "龟仙人：\n“这么说来，你爷爷\n他现在还好吗？”"
+	}, {
+		"text": "悟空：\n“我爷爷？爷爷他……\n很久以前就死了……”",
+		"role0": {
+			"name": "悟空",
+			"action": "moveTo",
+			"from": "leftOutside",
+			"to": "left"
+		}
+	}, {
+		"text": "龟仙人：\n“什么？这样啊。\n世事难料啊……”"
+	}, {
+		"text": "龟仙人：\n“怎么样，要不要到我家那，\n我带你修行怎么样？”"
+	}, {
+		"text": "悟空：\n“真的吗？”",
+		"role0": {
+			"name": "悟空笑",
+			"action": "fadeIn"
+		}
+	}, {
+		"text": "悟空：\n“那么等我收集完龙珠，\n我马上就到爷爷那里去！”"
+	}, {
+		"text": "布尔玛：\n“找到了！！这是颗七星球！”",
+		"role0": {
+			"name": "悟空笑",
+			"action": "fadeOut"
+		},
+		"role1": {
+			"name": "布尔玛兔子装",
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "right"
+		}
+	}, {
+		"text": "布尔玛：\n“太好啦，悟空！\n我们去找最后的那颗龙珠吧！”"
+	}, {
+		"text": "牛魔王：\n“怎么，就要出发了吗？\n好吧，有空再来过来玩啊！”",
+		"role0": {
+			"name": "牛魔王",
+			"action": "fadeIn",
+			"from": "center"
+		},
+		"role1": {
+			"name": "布尔玛兔子装",
+			"action": "fadeOut"
+		}
+	}, {
+		"text": "悟空：\n“好的，一定会来的！\n爷爷多保重啊！！”",
+		"role0": {
+			"name": "悟空笑",
+			"action": "fadeIn",
+			"from": "left"
+		},
+		"role1": {
+			"name": "牛魔王",
+			"action": "fadeOut"
+		}
+	}]
 }, {
 	"name": "比拉夫城",
 	"mapX": 172,

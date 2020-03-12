@@ -113,7 +113,7 @@ function funcInitStage() {
 				x: x,
 				y: y,
 				scale: zoom,
-				// opacity: 192,
+				opacity: 240,
 			});
 			layerStageBg.addChild(bg);
 
@@ -308,9 +308,9 @@ function funcRemove() {
 			// 只对标记为负数的格子做移除动画
 			var cell = cells[i + '_' + j];
 			cell.zIndex = 1;
-			var scaleToBig = cc.scaleTo(time, zoom * 1.5);
-			var fadeOut = cc.fadeOut(time);
-			var spawn = cc.spawn(scaleToBig, fadeOut);
+			var scaleTo = cc.scaleTo(time, zoom * 1.33);
+			var fadeTo = cc.fadeTo(time, 168);
+			var spawn = cc.spawn(scaleTo, fadeTo);
 			cell.runAction(spawn);
 
 			sum[item[0]] += 1;

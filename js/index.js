@@ -88,7 +88,7 @@ window.onload = function() {
 					cc.loader.loadJson(res.stage, function(_, data) {
 						stageData = data;
 						var probe = localStorage.getItem(funcEncrypt('stageLimit'));
-						control.stageLimit = funcDecryption(probe) - 0;
+						if (probe) control.stageLimit = funcDecryption(probe) - 0;
 
 						// 加载rect数据
 						cc.loader.loadJson(res.rect, function(_, data) {
