@@ -256,7 +256,7 @@ var sceneMap = cc.Scene.extend({
 		});
 		layerInfo.addChild(line);
 
-		var name = cc.LabelTTF.create('', '黑体', 16 * scale);
+		var name = cc.LabelTTF.create('', 'Arial', 16 * scale);
 		name.attr({
 			x: w / 2,
 			y: y0 / 2,

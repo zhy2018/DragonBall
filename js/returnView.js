@@ -4,13 +4,14 @@ function funcReturnView(context, mask, immediate, cb) {
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / 256;
 	scale = scale.toFixed(3) - 0;
-	var btn = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.returnView.btn));
+	var rect = rectData.sprite.returnView.btn;
+	var btn = cc.Sprite.create(res.sprite, funcRect(rect));
 	btn.attr({
-		x: w - 5.5 * scale,
-		y: h - 5 * scale,
+		x: w - rect[2] * scale,
+		y: h - rect[3] * scale,
 		anchorX: 1,
 		anchorY: 1,
-		scale: scale,
+		scale: scale * 1.33,
 	});
 	context.addChild(btn);
 	cc.eventManager.addListener({
@@ -129,9 +130,9 @@ function funcReturnView(context, mask, immediate, cb) {
 		box.addChild(title);
 
 		var str = '是否返回到世界地图?';
-		var text = cc.LabelTTF.create(str, '黑体', 10 * scale);
+		var text = cc.LabelTTF.create(str, 'Arial', 12 * scale);
 		text.attr({
-			x: 10 * scale,
+			x: 6 * scale,
 			y: boxH - 20 * scale,
 			anchorX: 0,
 		});
@@ -162,14 +163,14 @@ function funcReturnView(context, mask, immediate, cb) {
 		});
 		btnNo.addChild(iconNo);
 
-		var textYes = cc.LabelTTF.create('是', '黑体', 10 * scale);
+		var textYes = cc.LabelTTF.create('是', 'Arial', 12 * scale);
 		textYes.attr({
 			x: btnYes.width / 2,
 			y: btnYes.height / 2,
 			anchorX: 0,
 		});
 		btnYes.addChild(textYes);
-		var textNo = cc.LabelTTF.create('否', '黑体', 10 * scale);
+		var textNo = cc.LabelTTF.create('否', 'Arial', 12 * scale);
 		textNo.attr({
 			x: btnNo.width / 2,
 			y: btnNo.height / 2,

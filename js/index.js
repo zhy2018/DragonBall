@@ -1,4 +1,4 @@
-var config, res, rectData, stageData;
+var config, res, rectData, stageData, aniData;
 var control = {
 	winWidth: 0,
 	winHeight: 0,
@@ -46,7 +46,9 @@ var game = {
 		hitCount: 0, // 连击数
 		ani: {
 			stand: {},
-			hit: {},
+			hit3: {},
+			hit4: {},
+			hit5: {},
 		},
 	},
 };
@@ -83,19 +85,31 @@ window.onload = function() {
 					resData.push(res[i]);
 				}
 
-				cc.LoaderScene.preload(resData, function() {
+				cc.LoaderScene.preload(resData, function(_, data) {
+					var work = 111;
 					// 加载关卡数据
 					cc.loader.loadJson(res.stage, function(_, data) {
 						stageData = data;
 						var probe = localStorage.getItem(funcEncrypt('stageLimit'));
 						if (probe) control.stageLimit = funcDecryption(probe) - 0;
-
-						// 加载rect数据
-						cc.loader.loadJson(res.rect, function(_, data) {
-							rectData = data;
-							cc.director.runScene(control.scene.welcome); // 载入首个场景
-						});
+						funcCheckWork(work -= 1);
 					});
+
+					// 加载rect数据
+					cc.loader.loadJson(res.rect, function(_, data) {
+						rectData = data;
+						funcCheckWork(work -= 10);
+					});
+
+					// 加载帧动画数据
+					cc.loader.loadJson(res.animation, function(_, data) {
+						aniData = data;
+						funcCheckWork(work -= 100);
+					});
+
+					function funcCheckWork(work) {
+						if (work === 0) cc.director.runScene(control.scene.welcome); // 载入首个场景
+					}
 				}, this);
 			});
 		});

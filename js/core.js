@@ -48,7 +48,7 @@ function funcInitStage() {
 	control.zoom = control.zoom.toFixed(2) - 0;
 	var zoom = control.zoom;
 
-	// 响应格子的触控
+	// 格子的触控事件
 	cc.eventManager.addListener(cc.EventListener.create({
 		event: cc.EventListener.TOUCH_ONE_BY_ONE,
 		onTouchBegan: function(touch, e) {
@@ -72,6 +72,21 @@ function funcInitStage() {
 			control.currentCell = control.cells[row + '_' + col];
 			funcPress();
 			return true;
+		},
+		onTouchMoved: function(touch, e) {
+			if (!control.acceptTouch || control.lockOption) return false;
+			var target = e.getCurrentTarget();
+			var loc  = target.convertToNodeSpace(touch.getLocation());
+			var size = target.getContentSize();
+			var rect = cc.rect(0, 0, size.width, size.height);
+			if (!cc.rectContainsPoint(rect, loc)) return false;
+			if (!border.visible) return false;
+
+			var row = parseInt(loc.x / tileSize / zoom);
+			var col = parseInt(loc.y / tileSize / zoom);
+
+			control.currentCell = control.cells[row + '_' + col];
+			funcPress();
 		},
 	}), layerStage);
 
@@ -309,9 +324,8 @@ function funcRemove() {
 			var cell = cells[i + '_' + j];
 			cell.zIndex = 1;
 			var scaleTo = cc.scaleTo(time, zoom * 1.33);
-			var fadeTo = cc.fadeTo(time, 168);
-			var spawn = cc.spawn(scaleTo, fadeTo);
-			cell.runAction(spawn);
+			var fadeOut = cc.fadeOut(time);
+			cell.runAction(cc.sequence(scaleTo, fadeOut));
 
 			sum[item[0]] += 1;
 		}
@@ -334,7 +348,7 @@ function funcRemove() {
 		}
 
 		funcFall();
-	}, time + 0.1);
+	}, time * 2 + 0.1);
 
 	var mapping = [0, 'dp', 'hp', 'mp'];
 	var hero = game.hero;

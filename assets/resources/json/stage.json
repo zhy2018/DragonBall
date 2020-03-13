@@ -458,13 +458,14 @@
 	}, {
 		"text": "悟空：\n“好的，一定会来的！\n爷爷多保重啊！！”",
 		"role0": {
-			"name": "悟空笑",
-			"action": "fadeIn",
-			"from": "left"
-		},
-		"role1": {
 			"name": "牛魔王",
 			"action": "fadeOut"
+		},
+		"role1": {
+			"name": "悟空笑",
+			"flip": false,
+			"action": "fadeIn",
+			"from": "center"
 		}
 	}]
 }, {

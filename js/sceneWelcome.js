@@ -77,7 +77,7 @@ var sceneWelcome = cc.Scene.extend({
 		});
 		this.addChild(logo);
 
-		var btn = cc.LabelTTF.create('开始游戏', '黑体', 24 * scaleX);
+		var btn = cc.LabelTTF.create('开始游戏', 'Arial', 24 * scaleX);
 		btn.attr({
 			x: w / 2,
 			y: h / 4,

@@ -110,27 +110,25 @@ function funcInitUI() {
 	hero.hpFull = data.hpFull || config.hpLimit;
 	hero.mpFull = data.mpFull || config.mpLimit;
 	hero.dpFull = config.dpLimit;
-	hero.hp = data.hp || hero.hpFull;
-	hero.mp = data.mp || hero.mpFull;
+	hero.hp = data.hp;
+	hero.mp = data.mp;
 	hero.dp = config.dpLimit;
 	var w = control.winWidth, h = control.winHeight;
 	var scale = w / 2.5 / 112;
 	scale = scale.toFixed(3) - 0;
 	control.scaleUI = scale;
 
-	control.layer.ui.attr({
-		y: h,
-		scale: scale,
-	});
+	control.layer.ui.attr({ y: h });
 
 	var layerHP = cc.Layer.create();
-	layerHP.attr({ y: 32 });
+	layerHP.attr({ y: 32 * scale });
 	control.layer.ui.addChild(layerHP);
 
 	var hpUI = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.hpUI));
 	hpUI.attr({
 		anchorX: 0,
 		anchorY: 1,
+		scale: scale,
 	});
 	layerHP.addChild(hpUI);
 
@@ -139,32 +137,42 @@ function funcInitUI() {
 		rect[0] = i;
 		var hpBar = cc.Sprite.create(res.sprite, funcRect(rect));
 		hpBar.attr({
-			x: 32,
-			y: -23,
+			x: 32 * scale,
+			y: -23 * scale,
 			anchorX: 0,
 			anchorY: 0,
 			scaleX: 0,
+			scaleY: scale,
 		});
 		layerHP.addChild(hpBar);
 	}
 
 	var dp = cc.LayerColor.create(funcColor('#00e800'), 0, 2);
-	dp.attr({ x: 32, y: -28 });
+	dp.attr({
+		x: 32 * scale,
+		y: -28 * scale,
+		anchorX: 0,
+		scale: scale,
+	});
 	layerHP.addChild(dp);
 
-	var name = cc.LabelTTF.create(hero.name, '黑体', 16);
+	var name = cc.LabelTTF.create(hero.name, 'Arial', 16 * scale);
 	name.attr({
-		x: 32,
-		y: -1,
+		x: 32 * scale,
 		anchorX: 0,
 		anchorY: 1,
-		lineWidth: 1,
-		strokeStyle: cc.color(0, 0, 0, 255),
+		lineWidth: 1.5 * scale,
+		strokeStyle: funcColor('#000000'),
 	});
 	layerHP.addChild(name);
 
 	var layerMP = cc.Layer.create();
-	layerMP.attr({ y: -32 });
+	layerMP.attr({
+		y: -32 * scale,
+		anchorX: 0,
+		anchorY: 0,
+		scale: scale,
+	});
 	control.layer.ui.addChild(layerMP);
 
 	var mpUI = cc.Sprite.create(res.sprite, funcRect(rectData.sprite.main.mpUI));
@@ -231,7 +239,7 @@ function funcUpdateUI(type) {
 		if (hero.hp % hpLine) hp.push(hero.hp % hpLine);
 
 		for (var i = 0; i < hp.length; i += 1) {
-			layerHP[i + 1].attr({ scaleX: hp[i] / 4 });
+			layerHP[i + 1].attr({ scaleX: hp[i] / 4 * control.scaleUI });
 		}
 	}
 

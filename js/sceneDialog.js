@@ -12,7 +12,7 @@ var sceneDialog = cc.Scene.extend({
 		var layer = cc.LayerColor.create(funcColor('#000000'));
 		this.addChild(layer);
 
-		// 面板
+		// 对话面板
 		var panel = cc.LayerColor.create(funcColor('#000000'), w, rect[3] / 3 * 5 * scale);
 		panel.attr({
 			y: (h - panel.height) / 2,
@@ -123,7 +123,7 @@ var sceneDialog = cc.Scene.extend({
 		box.addChild(line);
 
 		// 字幕
-		var text = cc.LabelTTF.create('', '黑体', 14 * scale);
+		var text = cc.LabelTTF.create('', 'Arial', 14 * scale);
 		text.attr({
 			x: 8 * scale,
 			y: boxH - 8 * scale,
@@ -138,15 +138,15 @@ var sceneDialog = cc.Scene.extend({
 		// 下一步按钮
 		var rect = rectData.sprite.dialog.ball;
 		rect = JSON.parse(JSON.stringify(rect)); // 下面涉及到了写操作, 所以要复制一份出来, 防止污染涞源
-		var btn = cc.Sprite.create(res.sprite, funcRect(rect));
-		btn.attr({
-			x: w - btn.width / 2 * scale,
-			y: btn.height / 2 * scale,
+		var btnNext = cc.Sprite.create(res.sprite, funcRect(rect));
+		btnNext.attr({
+			x: w - btnNext.width / 2 * scale,
+			y: btnNext.height / 2 * scale,
 			anchorX: 1,
 			anchorY: 0,
 			scale: scale,
 		});
-		box.addChild(btn);
+		box.addChild(btnNext);
 		var ani = cc.Animation.create();
 		for (var i = 0; i < 4; i += 1) {
 			var frame = cc.SpriteFrame.create(res.sprite, funcRect(rect));
@@ -155,15 +155,14 @@ var sceneDialog = cc.Scene.extend({
 		}
 		ani.setDelayPerUnit(0.1);
 		ani.setRestoreOriginalFrame(true);
-		btn.runAction(cc.repeatForever(cc.sequence(cc.animate(ani), cc.delayTime(3))));
-
+		btnNext.runAction(cc.repeatForever(cc.sequence(cc.animate(ani), cc.delayTime(3))));
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: function(touch, e) {
 				if (control.lockOption) return false;
 
 				var target = e.getCurrentTarget();
-				if (target != btn) return false;
+				if (target != btnNext) return false;
 
 				var loc = target.convertToNodeSpace(touch.getLocation());
 				var size = target.getContentSize();
@@ -178,7 +177,54 @@ var sceneDialog = cc.Scene.extend({
 					else cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面
 				}
 			}
-		}, btn);
+		}, btnNext);
+
+		// 跳过按钮
+		var pass = cc.Layer.create();
+		layer.addChild(pass);
+		rect = rectData.sprite.dialog.arrow;
+		var btnPass = cc.Sprite.create(res.sprite, funcRect(rect));
+		btnPass.attr({
+			anchorX: 0,
+			anchorY: 0,
+			scale: scale,
+		});
+		pass.addChild(btnPass);
+		var textPass = cc.LabelTTF.create('跳过 ', 'Arial', 14 * scale);
+		textPass.attr({
+			anchorX: 0,
+			anchorY: 0,
+			fillStyle: funcColor('#ffffff'),
+		});
+		pass.addChild(textPass);
+		var passW = btnPass.width + textPass.width / scale;
+		var passH = btnPass.height;
+		btnPass.attr({ x: textPass.width });
+		pass.attr({
+			x: w - passW * 1.5 * scale,
+			y: h - passH * 2 * scale,
+			width: passW * scale,
+			height: passH * scale,
+			anchorY: 1,
+		});
+		cc.eventManager.addListener({
+			event: cc.EventListener.TOUCH_ONE_BY_ONE,
+			onTouchBegan: function(touch, e) {
+				control.lockOption = false;
+
+				var target = e.getCurrentTarget();
+				if (target != pass) return false;
+
+				var loc = target.convertToNodeSpace(touch.getLocation());
+				var size = target.getContentSize();
+				var rect = cc.rect(0, 0, size.width, size.height);
+				if (!cc.rectContainsPoint(rect, loc)) return false;
+
+				if (control.storyAt === 'before' && !stageData[control.stageNum].noFight)
+					cc.director.pushScene(control.scene.main);
+				else cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面
+			}
+		}, pass);
 
 		funcShow();
 		// 显示台词, 背景, 人物
@@ -187,7 +233,7 @@ var sceneDialog = cc.Scene.extend({
 
 			var callFunc00 = cc.callFunc(function() {
 				control.lockOption = true; // 暂时锁住玩家操作, 防止狂点
-				btn.attr({ visible: false });
+				btnNext.attr({ visible: false });
 			});
 
 			var callFunc0 = cc.callFunc(function() {
@@ -195,7 +241,7 @@ var sceneDialog = cc.Scene.extend({
 			});
 
 			var callFunc1 = cc.callFunc(function() {
-				btn.attr({ visible: true });
+				btnNext.attr({ visible: true });
 				control.lockOption = false; // 放开锁定
 			});
 
@@ -247,9 +293,15 @@ var sceneDialog = cc.Scene.extend({
 				else sprite.opacity = 255;
 				if (obj.name) sprite.setTextureRect(funcRect(rectData.sprite.dialog[obj.name]));
 				switch (obj.from) {
-					case 'center':
+					case 'left':
 						sprite.attr({
-							x: w / 2,
+							x: w / 7 * 1.3,
+							y: boxH,
+						});
+						break;
+					case 'leftOutside':
+						sprite.attr({
+							x: -sprite.width / 2 * scale,
 							y: boxH,
 						});
 						break;
@@ -265,14 +317,14 @@ var sceneDialog = cc.Scene.extend({
 							y: boxH,
 						});
 						break;
-					case 'bottom':
-						sprite.attr({ x: w / 2 });
-						break;
-					case 'leftOutside':
+					case 'center':
 						sprite.attr({
-							x: -sprite.width / 2 * scale,
+							x: w / 2,
 							y: boxH,
 						});
+						break;
+					case 'bottom':
+						sprite.attr({ x: w / 2 });
 						break;
 					default:
 						break;
