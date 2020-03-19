@@ -329,22 +329,22 @@ function funcInitFight() {
 	game.hero.ani.stand = aniStand;
 	funcUpdateAction('hero', [['stand', 0]]);
 
-	// 加载动作数据
-	cc.loader.loadJson(res.animation, function(_, data) {
-		var aniHit = cc.Animation.create();
-		var a = data.hero.hit;
-		for (var i = 0; i < a.length; i += 1) {
-			// 帧延迟
-			for (var j = 0; j < a[i][5]; j += 1) {
-				var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
-				frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
-				aniHit.addSpriteFrame(frame);
+	for (var m = 3; m <= 5; m += 1) {
+		game.hero.ani['hit' + m] = cc.Animation.create();
+		game.hero.ani['hit' + m].setDelayPerUnit(aniData.hero.hit.delay);
+	}
+	var a = aniData.hero.hit.data;
+	for (var i = 0, m = 2; i < a.length; i += 1) {
+		if (a[i][7]) m += 1;
+		// 帧延迟
+		for (var j = 0; j < a[i][5]; j += 1) {
+			var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
+			frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
+			for (var n = m; n <= 5; n += 1) {
+				game.hero.ani['hit' + n].addSpriteFrame(frame);
 			}
 		}
-		aniHit.setDelayPerUnit(0.016);
-		// aniHit.getFrames()[0]._delayPerUnit = 10;
-		game.hero.ani.hit = aniHit;
-	});
+	}
 }
 
 // 更新打手的动作

@@ -350,10 +350,17 @@ function funcRemove() {
 		funcFall();
 	}, time * 2 + 0.1);
 
-	var mapping = [0, 'dp', 'hp', 'mp'];
+	var mapping = ['hit', 'dp', 'hp', 'mp'];
 	var hero = game.hero;
-	for (var i = 1; i < control.cellUpper; i += 1) {
+	for (var i = 0; i < control.cellUpper; i += 1) {
 		if (sum[i] === 0) continue;
+
+		if (!i) {
+			var hitNum = sum[i];
+			if (hitNum > 5) hitNum = 5;
+			funcUpdateAction('hero', [[mapping[i] + hitNum, 1], ['stand', 0]]);
+			continue;
+		}
 
 		var value = hero[mapping[i]];
 		var valueFull = hero[mapping[i] + 'Full'];
