@@ -34,7 +34,7 @@ var control = {
 	storyAt: 'before' // before or after,
 };
 var game = {
-	hero: {
+	XiaoWuKong: {
 		name: '小悟空',
 		hp: 0,
 		mp: 0,

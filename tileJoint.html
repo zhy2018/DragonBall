@@ -8,7 +8,7 @@
 body {
 	margin: auto;
 	color: gray;
-	/* background-color: #002040; */
+	background-color: #002040;
 }
 #myCanvas {
 	width: 1px;
@@ -116,7 +116,7 @@ function funcPrepareImage() {
 				domImg.style.left = x + 'px';
 				if (x + domImg.width > xUpper) xUpper = x + domImg.width;
 			}
-		}
+		} else xUpper = parseInt(domImg.style.left) + domImg.width;
 
 		if (name[3] > 0) {
 			if (name[2] > 0) {
@@ -149,6 +149,8 @@ function funcPrepareImage() {
 // 画上原图
 function funcDrawImage() {
 	var canvas2 = document.createElement('canvas');
+	canvas2.width = xUpper;
+	canvas2.height = yUpper;
 	var ct2 = canvas2.getContext('2d');
 	var offsetX = 0, offsetY;
 
@@ -167,8 +169,8 @@ function funcDrawImage() {
 	}
 
 	// 抠图(去掉背景色)
-	var imgData = ct2.getImageData(0, 0, canvas2.width, canvas2.height);
-	var data = imgData.data;
+	var imgDataNew = ct2.getImageData(0, 0, canvas2.width, canvas2.height);
+	var data = imgDataNew.data;
 	var r0 = data[0], g0 = data[1], b0 = data[2]; // 以左上角的像素作为透明
 
 	for (var i = 0; i < data.length; i += 4) {
@@ -195,7 +197,7 @@ function funcDrawImage() {
 
 	var img = imagesData[0];
 	var imgX = parseInt(img.style.left), imgY = parseInt(img.style.top);
-	ct.putImageData(imgData, imgX, imgY);
+	ct.putImageData(imgDataNew, imgX, imgY);
 }
 
 // 保存拼接好的图
@@ -209,7 +211,11 @@ function funcSave() {
 
 // 清除画布里的图片
 function funcClear() {
-	ct.clearRect(0, 0, canvas.width, canvas.height);
+	// ct.clearRect(0, 0, canvas.width, canvas.height);
+	canvas.style.width = '1px';
+	canvas.style.height = '1px';
+	canvas.width = 1;
+	canvas.height = 1;
 	var refer = document.getElementById('refer');
 	refer.textContent = '';
 	prefix = '';
