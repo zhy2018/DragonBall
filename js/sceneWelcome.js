@@ -83,7 +83,7 @@ var sceneWelcome = cc.Scene.extend({
 			y: h / 4,
 			scaleX: 0.75,
 			lineWidth: 3 * scaleX,
-			strokeStyle: cc.color(0, 0, 0, 255),
+			strokeStyle: funcColor('#000000'),
 		});
 		this.addChild(btn);
 		btn.runAction(cc.repeatForever(cc.Blink.create(1, 1)));

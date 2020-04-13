@@ -356,7 +356,9 @@
 		"bg": "龟仙人气功",
 		"role1": {
 			"name": "龟仙人",
-			"action": "fadeOut"
+			"action": "moveTo",
+			"from": "rightOutside",
+			"to": "rightOutside"
 		}
 	}, {
 		"text": "神龟冲击波把城里的大火\n扑灭得干干净净。",

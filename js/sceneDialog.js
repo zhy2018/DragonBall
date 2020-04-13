@@ -130,7 +130,7 @@ var sceneDialog = cc.Scene.extend({
 			anchorX: 0,
 			anchorY: 1,
 			fillStyle: funcColor('#000000'),
-			strokeStyle: funcColor('#ffffff'),
+			strokeStyle: funcColor('#000000'),
 			lineWidth: 1,
 		});
 		box.addChild(text);
@@ -210,8 +210,6 @@ var sceneDialog = cc.Scene.extend({
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			onTouchBegan: function(touch, e) {
-				control.lockOption = false;
-
 				var target = e.getCurrentTarget();
 				if (target != pass) return false;
 
@@ -220,6 +218,7 @@ var sceneDialog = cc.Scene.extend({
 				var rect = cc.rect(0, 0, size.width, size.height);
 				if (!cc.rectContainsPoint(rect, loc)) return false;
 
+				control.lockOption = false;
 				if (control.storyAt === 'before' && !stageData[control.stageNum].noFight)
 					cc.director.pushScene(control.scene.main);
 				else cc.director.popToSceneStackLevel(2); // 第二个场景是世界地图页面

@@ -260,6 +260,8 @@ var sceneMap = cc.Scene.extend({
 		name.attr({
 			x: w / 2,
 			y: y0 / 2,
+			lineWidth: 1,
+			strokeStyle: funcColor('#000000'),
 			fillStyle: funcColor('#000000'),
 			string: data[control.stageLimit].name,
 		});
