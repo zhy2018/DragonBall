@@ -106,7 +106,7 @@ function funcInitBg() {
 // 初始化小英雄的血槽, 防御槽和气槽
 function funcInitUI() {
 	var data = stageData[control.stageNum];
-	var hero = game.hero;
+	var hero = game.XiaoWuKong;
 	hero.hpFull = data.hpFull || config.hpLimit;
 	hero.mpFull = data.mpFull || config.mpLimit;
 	hero.dpFull = config.dpLimit;
@@ -206,7 +206,9 @@ function funcInitUI() {
 	});
 	layerMP.addChild(mpLoader2);
 
-	rect = rectData.sprite.main.mpBar;
+	// 最后3个"sprite"是气条
+	// "rect"涉及到了写操作，所以需要复制一份出来，防止污染来源。
+	rect = JSON.parse(JSON.stringify(rectData.sprite.main.mpBar));
 	for (var i = 0; i < 3; i += 1) {
 		rect[0] += i * 6;
 		var mpBar = cc.Sprite.create(res.sprite, funcRect(rect));
@@ -226,7 +228,7 @@ function funcUpdateUI(type) {
 	var layerUI = control.layer.ui.children;
 	var layerHP = layerUI[0].children;
 	var layerMP = layerUI[1].children;
-	var hero = game.hero;
+	var hero = game.XiaoWuKong;
 	var hpLine = config.hpLine;
 
 	if (!type || type === 'hp') {
@@ -317,7 +319,7 @@ function funcInitFight() {
 		scale: scale,
 	});
 	fighter.addChild(hero);
-	fighter.hero = hero;
+	fighter.XiaoWuKong = hero;
 
 	var aniStand = cc.Animation.create();
 	for (var i = 0; i < 8; i += 1) {
@@ -326,14 +328,15 @@ function funcInitFight() {
 		aniStand.addSpriteFrame(frame);
 	}
 	aniStand.setDelayPerUnit(0.1);
-	game.hero.ani.stand = aniStand;
-	funcUpdateAction('hero', [['stand', 0]]);
+	hero = game.XiaoWuKong;
+	hero.ani.stand = aniStand;
+	funcUpdateAction('XiaoWuKong', [['stand', 0]]);
 
 	for (var m = 3; m <= 5; m += 1) {
-		game.hero.ani['hit' + m] = cc.Animation.create();
-		game.hero.ani['hit' + m].setDelayPerUnit(aniData.hero.hit.delay);
+		hero.ani['hit' + m] = cc.Animation.create();
+		hero.ani['hit' + m].setDelayPerUnit(aniData.XiaoWuKong.hit.delay);
 	}
-	var a = aniData.hero.hit.data;
+	var a = aniData.XiaoWuKong.hit.data;
 	for (var i = 0, m = 2; i < a.length; i += 1) {
 		if (a[i][7]) m += 1;
 		// 帧延迟
@@ -341,21 +344,21 @@ function funcInitFight() {
 			var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
 			frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
 			for (var n = m; n <= 5; n += 1) {
-				game.hero.ani['hit' + n].addSpriteFrame(frame);
+				hero.ani['hit' + n].addSpriteFrame(frame);
 			}
 		}
 	}
 }
 
 // 更新打手的动作
-// roleType: 角色类型, 0小英雄, 1坏蛋; statusGroup: 状态组, 每组状态包含状态名和循环次数
+// role: 角色; statusGroup: 状态组, 每组状态包含状态名和循环次数
 // 状态: stand站立, hit打击, defense防御, parry格挡, injured受伤, die倒地不起
-function funcUpdateAction(roleType, statusGroup) {
+function funcUpdateAction(role, statusGroup) {
 	var status = statusGroup[0][0];
 	var loop = statusGroup[0][1];
-	game[roleType].status = status;
-	var sprite = control.layer.fight.fighter[roleType];
-	var animation = game[roleType].ani[status];
+	game[role].status = status;
+	var sprite = control.layer.fight.fighter[role];
+	var animation = game[role].ani[status];
 	if (loop >= 2) animation.setLoops(loop); // 设置播放次数
 	var animate = cc.animate(animation);
 	if (loop <= 0) animate = cc.repeatForever(animate); // 设置循环播放
@@ -364,7 +367,7 @@ function funcUpdateAction(roleType, statusGroup) {
 	if (statusGroup.length >= 2 && loop >= 1) {
 		statusGroup.splice(0, 1);
 		var callFunc = cc.callFunc(function() {
-			funcUpdateAction(roleType, statusGroup);
+			funcUpdateAction(role, statusGroup);
 		});
 		work.push(callFunc);
 	}

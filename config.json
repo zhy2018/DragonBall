@@ -1,9 +1,9 @@
 {
+	"resPath": "assets/resources/",
 	"tileSize": 29,
 	"cellSize": 24,
 	"mapSizeLimit": 9,
 	"time": 0.2,
-	"resPath": "assets/resources/",
 	"hpLine": 256,
 	"hpLimit": 1024,
 	"hpStep": 16,
