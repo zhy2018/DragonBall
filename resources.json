@@ -1,8 +1,8 @@
 {
-	"sprite": "image/sprite.png",
-	"stage": "json/stage.json",
-	"action": "image/action.png",
-	"bg": "image/bg.png",
 	"animation": "json/animation.json",
-	"rect": "json/rect.json"
+	"rect": "json/rect.json",
+	"stage": "json/stage.json",
+	"bg": "image/bg.png",
+	"sprite": "image/sprite.png",
+	"小悟空": "image/小悟空.png"
 }

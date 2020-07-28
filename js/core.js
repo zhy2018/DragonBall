@@ -351,7 +351,7 @@ function funcRemove() {
 	}, time * 2 + 0.1);
 
 	var mapping = ['hit', 'dp', 'hp', 'mp'];
-	var hero = game.XiaoWuKong;
+	var hero = game.hero;
 	for (var i = 0; i < control.cellUpper; i += 1) {
 		if (sum[i] === 0) continue;
 
@@ -367,7 +367,7 @@ function funcRemove() {
 			// 更新角色动作
 			var hitNum = sum[i];
 			if (hitNum > 5) hitNum = 5;
-			funcUpdateAction('XiaoWuKong', [[mapping[i] + hitNum, 1], ['stand', 0]]);
+			funcUpdateAction('hero', [[mapping[i] + hitNum, 1], ['stand', 0]]);
 		}
 	}
 }

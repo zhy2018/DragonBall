@@ -64,9 +64,11 @@ var sceneMap = cc.Scene.extend({
 		}
 
 		// 小英雄
-		size = 32;
-		var rect = rectData.action.map.stand;
-		var hero = cc.Sprite.create(res.action, funcRect(rect));
+		var heroName = game.hero.name;
+		var act = aniData[heroName].站立_正面;
+		var areaData = act.data;
+		var area = areaData[0].area.split(',');
+		var hero = cc.Sprite.create(res[heroName], funcRect(area));
 		hero.attr({
 			x: data[control.stageLimit].mapX,
 			y: bg.height - Math.abs(data[control.stageLimit].mapY),
@@ -75,12 +77,12 @@ var sceneMap = cc.Scene.extend({
 		});
 		layer.addChild(hero);
 		var aniStand = cc.Animation.create();
-		for (var i = 0; i < 4; i += 1) {
-			rect[0] = i * size;
-			var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
+		for (var i = 0; i < areaData.length; i += 1) {
+			area = areaData[i].area.split(',');
+			var frame = cc.SpriteFrame.create(res[heroName], funcRect(area));
 			aniStand.addSpriteFrame(frame);
 		}
-		aniStand.setDelayPerUnit(0.2);
+		aniStand.setDelayPerUnit(act.delay);
 		hero.runAction(cc.repeatForever(cc.animate(aniStand)));
 
 		var eventType = 'click'; // click or drag
@@ -138,14 +140,16 @@ var sceneMap = cc.Scene.extend({
 					if (!collide) continue;
 					if (sprite.stageNum === hero.stageNum) break;
 
-					var rect = rectData.action.map.go;
+					var heroName = game.hero.name;
+					var act = aniData[heroName].行走;
+					var areaData = act.data;
 					var aniGo = cc.Animation.create();
-					for (var i = 0; i < 8; i += 1) {
-						rect[0] = i * size;
-						var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
+					for (var i = 0; i < areaData.length; i += 1) {
+						var area = areaData[i].area.split(',');
+						var frame = cc.SpriteFrame.create(res[heroName], funcRect(area));
 						aniGo.addSpriteFrame(frame);
 					}
-					aniGo.setDelayPerUnit(0.1);
+					aniGo.setDelayPerUnit(act.delay);
 					control.lockOption = true;
 					hero.flippedX = sprite.x < hero.x;
 					hero.stopAllActions();

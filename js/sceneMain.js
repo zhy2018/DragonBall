@@ -106,7 +106,7 @@ function funcInitBg() {
 // 初始化小英雄的血槽, 防御槽和气槽
 function funcInitUI() {
 	var data = stageData[control.stageNum];
-	var hero = game.XiaoWuKong;
+	var hero = game.hero;
 	hero.hpFull = data.hpFull || config.hpLimit;
 	hero.mpFull = data.mpFull || config.mpLimit;
 	hero.dpFull = config.dpLimit;
@@ -228,7 +228,7 @@ function funcUpdateUI(type) {
 	var layerUI = control.layer.ui.children;
 	var layerHP = layerUI[0].children;
 	var layerMP = layerUI[1].children;
-	var hero = game.XiaoWuKong;
+	var hero = game.hero;
 	var hpLine = config.hpLine;
 
 	if (!type || type === 'hp') {
@@ -319,7 +319,7 @@ function funcInitFight() {
 		scale: scale,
 	});
 	fighter.addChild(hero);
-	fighter.XiaoWuKong = hero;
+	fighter.hero = hero;
 
 	var aniStand = cc.Animation.create();
 	for (var i = 0; i < 8; i += 1) {
@@ -328,15 +328,15 @@ function funcInitFight() {
 		aniStand.addSpriteFrame(frame);
 	}
 	aniStand.setDelayPerUnit(0.1);
-	hero = game.XiaoWuKong;
+	hero = game.hero;
 	hero.ani.stand = aniStand;
-	funcUpdateAction('XiaoWuKong', [['stand', 0]]);
+	funcUpdateAction('hero', [['stand', 0]]);
 
 	for (var m = 3; m <= 5; m += 1) {
 		hero.ani['hit' + m] = cc.Animation.create();
-		hero.ani['hit' + m].setDelayPerUnit(aniData.XiaoWuKong.hit.delay);
+		hero.ani['hit' + m].setDelayPerUnit(aniData.hero.hit.delay);
 	}
-	var a = aniData.XiaoWuKong.hit.data;
+	var a = aniData.hero.hit.data;
 	for (var i = 0, m = 2; i < a.length; i += 1) {
 		if (a[i][7]) m += 1;
 		// 帧延迟

@@ -21,7 +21,7 @@ var control = {
 	acceptTouch: false, // 是否响应触控事件
 	lockOption: false, // 锁定玩家的所有操作
 	stageNum: 0,
-	stageLimit: 0,
+	stageLimit: 4,
 	sceneNum: 0,
 	scaleUI: 1,
 	scene: {
@@ -34,7 +34,7 @@ var control = {
 	storyAt: 'before' // before or after,
 };
 var game = {
-	XiaoWuKong: {
+	hero: {
 		name: '小悟空',
 		hp: 0,
 		mp: 0,
