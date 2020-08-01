@@ -311,8 +311,11 @@ function funcInitFight() {
 	fight.fighter = fighter;
 
 	// 小英雄
-	var rect = rectData.action.main.stand;
-	var hero = cc.Sprite.create(res.action, funcRect(rect));
+	var heroName = game.hero.name;
+	var act = aniData[heroName].站立_侧面;
+	var areaData = act.data;
+	var area = areaData[0].area.split(',');
+	var hero = cc.Sprite.create(res.action, funcRect(area));
 	hero.attr({
 		x: w / 2,
 		anchorY: 0,
@@ -322,32 +325,36 @@ function funcInitFight() {
 	fighter.hero = hero;
 
 	var aniStand = cc.Animation.create();
-	for (var i = 0; i < 8; i += 1) {
-		rect[0] = i * 32;
-		var frame = cc.SpriteFrame.create(res.action, funcRect(rect));
+	for (var i = 0; i < areaData.length; i += 1) {
+		area = areaData[i].area.split(',');
+		var frame = cc.SpriteFrame.create(res[heroName], funcRect(area));
 		aniStand.addSpriteFrame(frame);
 	}
-	aniStand.setDelayPerUnit(0.1);
+	aniStand.setDelayPerUnit(act.delay);
 	hero = game.hero;
 	hero.ani.stand = aniStand;
 	funcUpdateAction('hero', [['stand', 0]]);
 
-	for (var m = 3; m <= 5; m += 1) {
-		hero.ani['hit' + m] = cc.Animation.create();
-		hero.ani['hit' + m].setDelayPerUnit(aniData.hero.hit.delay);
-	}
-	var a = aniData.hero.hit.data;
-	for (var i = 0, m = 2; i < a.length; i += 1) {
-		if (a[i][7]) m += 1;
-		// 帧延迟
-		for (var j = 0; j < a[i][5]; j += 1) {
-			var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
-			frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
-			for (var n = m; n <= 5; n += 1) {
-				hero.ani['hit' + n].addSpriteFrame(frame);
-			}
-		}
-	}
+	act = aniData[heroName].三拳;
+	hero.ani.hit3 = cc.Animation.create();
+	hero.ani.hit3.setDelayPerUnit(act.delay);
+	hero.ani.hit4 = cc.Animation.create();
+	hero.ani.hit4.setDelayPerUnit(act.delay);
+	hero.ani.hit5 = cc.Animation.create();
+	hero.ani.hit5.setDelayPerUnit(act.delay);
+
+	// var a = aniData.hero.hit.data;
+	// for (var i = 0, m = 2; i < a.length; i += 1) {
+	// 	if (a[i][7]) m += 1;
+	// 	// 帧延迟
+	// 	for (var j = 0; j < a[i][5]; j += 1) {
+	// 		var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
+	// 		frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
+	// 		for (var n = m; n <= 5; n += 1) {
+	// 			hero.ani['hit' + n].addSpriteFrame(frame);
+	// 		}
+	// 	}
+	// }
 }
 
 // 更新打手的动作
