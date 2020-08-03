@@ -312,49 +312,60 @@ function funcInitFight() {
 
 	// 小英雄
 	var heroName = game.hero.name;
-	var act = aniData[heroName].站立_侧面;
-	var areaData = act.data;
-	var area = areaData[0].area.split(',');
-	var hero = cc.Sprite.create(res.action, funcRect(area));
-	hero.attr({
-		x: w / 2,
-		anchorY: 0,
-		scale: scale,
-	});
-	fighter.addChild(hero);
-	fighter.hero = hero;
+	var hero = game.hero;
+	var acts = '站立_侧面,三拳,第4击,第5击';
+	var anis = 'stand,hit3,hit4,hit5';
 
-	var aniStand = cc.Animation.create();
-	for (var i = 0; i < areaData.length; i += 1) {
-		area = areaData[i].area.split(',');
-		var frame = cc.SpriteFrame.create(res[heroName], funcRect(area));
-		aniStand.addSpriteFrame(frame);
+	for (var k = 0; k < acts.split(',').length; k += 1) {
+		var actName = acts.split(',')[k];
+		var act = aniData[heroName][actName];
+		var frameData = act.data;
+		var area = [];
+
+		if (k === 0) {
+			area = frameData[0].area.split(',');
+			var sprite = cc.Sprite.create(res.action, funcRect(area));
+			sprite.attr({
+				x: w / 2,
+				anchorY: 0,
+				scale: scale,
+			});
+			fighter.addChild(sprite);
+			fighter.hero = sprite;
+		}
+
+		var ani = cc.Animation.create();
+		ani.setDelayPerUnit(act.delay);
+
+		for (var i = 0; i < frameData.length; i += 1) {
+			area = frameData[i].area.split(',');
+			var frame = cc.SpriteFrame.create(res[heroName], funcRect(area));
+			var offset = frameData[i].offset;
+			if (offset) {
+				// 设置帧偏移
+				offset = offset.split(',');
+				frame.setOffset({
+					x: offset[0] - 0,
+					y: offset[1] - 0,
+				});
+			}
+
+			var keep = frameData[i].keep;
+			if (keep) {
+				// 设置帧延迟
+				for (var j = 0; j < keep; j += 1) {
+					ani.addSpriteFrame(frame);
+				}
+			} else {
+				ani.addSpriteFrame(frame);
+			}
+		}
+
+		var aniName = anis.split(',')[k];
+		hero.ani[aniName] = ani;
 	}
-	aniStand.setDelayPerUnit(act.delay);
-	hero = game.hero;
-	hero.ani.stand = aniStand;
+
 	funcUpdateAction('hero', [['stand', 0]]);
-
-	act = aniData[heroName].三拳;
-	hero.ani.hit3 = cc.Animation.create();
-	hero.ani.hit3.setDelayPerUnit(act.delay);
-	hero.ani.hit4 = cc.Animation.create();
-	hero.ani.hit4.setDelayPerUnit(act.delay);
-	hero.ani.hit5 = cc.Animation.create();
-	hero.ani.hit5.setDelayPerUnit(act.delay);
-
-	// var a = aniData.hero.hit.data;
-	// for (var i = 0, m = 2; i < a.length; i += 1) {
-	// 	if (a[i][7]) m += 1;
-	// 	// 帧延迟
-	// 	for (var j = 0; j < a[i][5]; j += 1) {
-	// 		var frame = cc.SpriteFrame.create(res.action, funcRect(a[i]));
-	// 		frame.setOffset({ x: a[i][4], y: 0 }); // x轴需要偏移一定距离才能显示正确
-	// 		for (var n = m; n <= 5; n += 1) {
-	// 			hero.ani['hit' + n].addSpriteFrame(frame);
-	// 		}
-	// 	}
-	// }
 }
 
 // 更新打手的动作

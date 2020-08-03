@@ -367,7 +367,12 @@ function funcRemove() {
 			// 更新角色动作
 			var hitNum = sum[i];
 			if (hitNum > 5) hitNum = 5;
-			funcUpdateAction('hero', [[mapping[i] + hitNum, 1], ['stand', 0]]);
+			var actArr = [];
+			for (var j = 3; j <= hitNum; j += 1) {
+				actArr.push(['hit' + j, 1]);
+			}
+			actArr.push(['stand', 0]);
+			funcUpdateAction('hero', actArr);
 		}
 	}
 }
