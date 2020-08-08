@@ -156,9 +156,10 @@ function funcInitUI() {
 	});
 	layerHP.addChild(dp);
 
-	var name = cc.LabelTTF.create(hero.name, 'Arial', 16 * scale);
+	var name = cc.LabelTTF.create(hero.name, 'Arial', 14 * scale);
 	name.attr({
 		x: 32 * scale,
+		y: -4,
 		anchorX: 0,
 		anchorY: 1,
 		lineWidth: 1.5 * scale,

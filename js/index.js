@@ -33,24 +33,37 @@ var control = {
 	story: '', // 当前故事
 	storyAt: 'before' // before or after,
 };
-var game = {
-	hero: {
-		name: '小悟空',
-		hp: 0,
-		mp: 0,
-		mpGather: 0,
-		dp: 0,
-		status: 'stand',
-		hitPhase: 0, // 第n段打击
-		hitUpper: 0, // 共n段打击
-		hitCount: 0, // 连击数
-		ani: {
-			stand: {},
-			hit3: {},
-			hit4: {},
-			hit5: {},
-		},
+
+// 游戏角色原型
+var rolePrototype = {
+	name: '',
+	hp: 0,
+	mp: 0,
+	mpGather: 0,
+	dp: 0,
+
+	attack: 1,
+	defense: 0,
+	invincible: false, // 无敌
+	superArmor: false, // 霸体
+	stealth: false, // 隐身
+	validTime: 0, // 特殊状态的剩余毫秒数
+
+	status: 'stand',
+	hitPhase: 0, // 第n段打击
+	hitUpper: 0, // 共n段打击
+	hitCount: 0, // 连击数
+	ani: {
+		stand: {},
+		hit3: {},
+		hit4: {},
+		hit5: {},
 	},
+};
+
+var game = {
+	hero: {},
+	enemy: {},
 };
 
 // 执行入口
@@ -108,6 +121,7 @@ window.onload = function() {
 					});
 
 					function funcCheckWork(work) {
+
 						if (work === 0) cc.director.runScene(control.scene.welcome); // 载入首个场景
 					}
 				}, this);
