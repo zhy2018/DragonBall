@@ -319,7 +319,7 @@ function funcInitFight() {
 
 	for (var k = 0; k < acts.split(',').length; k += 1) {
 		var actName = acts.split(',')[k];
-		var act = aniData[heroName][actName];
+		var act = aniData[heroName].frameData[actName];
 		var frameData = act.data;
 		var area = [];
 

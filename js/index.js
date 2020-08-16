@@ -62,7 +62,15 @@ var rolePrototype = {
 };
 
 var game = {
-	hero: {},
+	hero: {
+		name: '小悟空',
+		ani: {
+			stand: {},
+			hit3: {},
+			hit4: {},
+			hit5: {},
+		},
+	},
 	enemy: {},
 };
 

@@ -65,7 +65,7 @@ var sceneMap = cc.Scene.extend({
 
 		// 小英雄
 		var heroName = game.hero.name;
-		var act = aniData[heroName].站立_正面;
+		var act = aniData[heroName].frameData.站立_正面;
 		var areaData = act.data;
 		var area = areaData[0].area.split(',');
 		var hero = cc.Sprite.create(res[heroName], funcRect(area));
@@ -141,7 +141,7 @@ var sceneMap = cc.Scene.extend({
 					if (sprite.stageNum === hero.stageNum) break;
 
 					var heroName = game.hero.name;
-					var act = aniData[heroName].行走;
+					var act = aniData[heroName].frameData.行走;
 					var areaData = act.data;
 					var aniGo = cc.Animation.create();
 					for (var i = 0; i < areaData.length; i += 1) {
